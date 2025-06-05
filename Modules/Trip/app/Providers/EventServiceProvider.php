@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Trip\App\Providers;
+namespace Modules\Trip\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 

@@ -4,6 +4,6 @@
     "description": "",
     "keywords": [],
     "priority": 0,
-    "providers": ["Modules\\Trip\\App\\Providers\\TripServiceProvider"],
+    "providers": ["Modules\\Trip\\Providers\\TripServiceProvider"],
     "files": []
 }

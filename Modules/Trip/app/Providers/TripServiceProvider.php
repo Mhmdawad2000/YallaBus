@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Trip\App\Providers;
+namespace Modules\Trip\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;

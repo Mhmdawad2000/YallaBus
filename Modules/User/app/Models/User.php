@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\User\App\Models;
+namespace Modules\User\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Modules\Settings\App\Models\City;
+use Modules\Settings\Models\City;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Modules\User\database\factories\UserFactory;
