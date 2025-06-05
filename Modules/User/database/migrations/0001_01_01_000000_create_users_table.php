@@ -12,7 +12,8 @@ return new class extends Migration {
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id(); // المعرف الفريد للمستخدم
-            $table->string('name')->comment('اسم المستخدم الكامل');
+            $table->string('first_name')->comment('اسم المستخدم الاول');
+            $table->string('last_name')->comment('اسم المستخدم الاخير');
             $table->string('email')->unique()->comment('البريد الإلكتروني للمستخدم (يستخدم لتسجيل الدخول)');
             $table->timestamp('email_verified_at')->nullable()->comment('تاريخ وتوقيت التحقق من البريد الإلكتروني');
             $table->string('password')->comment('كلمة المرور مشفرة');
