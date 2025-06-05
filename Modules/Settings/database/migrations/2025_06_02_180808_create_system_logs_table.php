@@ -18,6 +18,8 @@ return new class extends Migration {
             $table->string('ip_address')->nullable()->comment('عنوان IP مصدر الحدث');
             $table->string('user_agent')->nullable()->comment('معلومات المتصفح أو الجهاز');
             $table->timestamps();
+            $table->softDeletes(); // Soft deletes
+
         });
     }
 

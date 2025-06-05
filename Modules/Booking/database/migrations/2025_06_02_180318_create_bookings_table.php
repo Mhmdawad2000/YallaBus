@@ -20,6 +20,8 @@ return new class extends Migration {
             $table->timestamp('cancelled_at')->nullable()->comment('تاريخ ووقت إلغاء الحجز إن وجد');
             $table->text('cancellation_reason')->nullable()->comment('سبب إلغاء الحجز إن وجد');
             $table->timestamps();
+            $table->softDeletes(); // Soft deletes
+
         });
     }
 

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('rating')->comment('تقييم الرحلة من 1 إلى 5 نجوم');
             $table->text('comment')->nullable()->comment('تعليق المستخدم على الرحلة');
             $table->timestamps();
+            $table->softDeletes(); // Soft deletes
             
             $table->unique(['user_id', 'trip_id'])->comment('ضمان تقييم المستخدم للرحلة مرة واحدة فقط');
         });

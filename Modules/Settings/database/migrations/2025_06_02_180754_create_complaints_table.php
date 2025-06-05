@@ -21,6 +21,8 @@ return new class extends Migration {
             $table->foreignId('resolved_by')->nullable()->constrained('users')->onDelete('set null')->comment('المسؤول الذي حل الشكوى');
             $table->timestamp('resolved_at')->nullable()->comment('تاريخ ووقت حل الشكوى');
             $table->timestamps();
+            $table->softDeletes(); // Soft deletes
+
         });
     }
 

@@ -17,10 +17,23 @@ return new class extends Migration {
             $table->string('email')->unique()->comment('البريد الإلكتروني للمستخدم (يستخدم لتسجيل الدخول)');
             $table->timestamp('email_verified_at')->nullable()->comment('تاريخ وتوقيت التحقق من البريد الإلكتروني');
             $table->string('password')->comment('كلمة المرور مشفرة');
+            $table->string('code_phone')->nullable()->comment('معرف الدولة الخلوي');
             $table->string('phone')->nullable()->comment('رقم الهاتف المحمول');
-            $table->enum('role', ['user', 'admin', 'support', 'company'])->default('user')->comment('دور المستخدم في النظام');
+            $table->foreignId('city_id')->constrained('cities')->comment('مدينة المستخدم في النظام');
+            $table->foreignId('role_id')->constrained('roles')->comment('دور المستخدم في النظام');
             $table->rememberToken()->comment('توكن للتذكر');
             $table->timestamps();
+            $table->softDeletes();
+            // Indexes
+            $table->index('role_id');
+            $table->index(['last_name', 'first_name']);
+            $table->index('email');
+            $table->index('phone');
+
+            // Additional Security
+            $table->timestamp('last_login_at')->nullable()->comment('Last successful login timestamp');
+            $table->ipAddress('last_login_ip')->nullable()->comment('IP address of last login');
+
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

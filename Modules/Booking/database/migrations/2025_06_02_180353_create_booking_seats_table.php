@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->foreignId('seat_id')->constrained()->onDelete('cascade')->comment('المقعد المحجوز');
             $table->decimal('price', 8, 2)->comment('سعر المقعد وقت الحجز');
             $table->timestamps();
+            $table->softDeletes(); // Soft deletes
 
             $table->unique(['booking_id', 'seat_id'])->comment('ضمان عدم تكرار المقعد في نفس الحجز');
         });

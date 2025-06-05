@@ -19,6 +19,8 @@ return new class extends Migration {
             $table->enum('status', ['pending', 'completed', 'failed', 'refunded'])->default('pending')->comment('حالة الدفع');
             $table->text('payment_details')->nullable()->comment('تفاصيل إضافية عن الدفع (قد تحتوي بيانات البطاقة المشفرة)');
             $table->timestamps();
+            $table->softDeletes(); // Soft deletes
+
         });
     }
 
