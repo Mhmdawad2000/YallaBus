@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Booking\App\Providers;
+namespace Modules\Booking\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 

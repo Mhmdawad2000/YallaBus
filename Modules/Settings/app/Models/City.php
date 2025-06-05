@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Settings\App\Models;
+namespace Modules\Settings\Models;
 
 use App\Models\BaseModel;
-use Modules\User\App\Models\User;
+use Modules\User\Models\User;
 // use Modules\Settings\Database\Factories\CityFactory;
 
 class City extends BaseModel
