@@ -3,6 +3,8 @@
 namespace Modules\User\App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Modules\Settings\App\Models\City;
+use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Modules\User\database\factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,6 +14,7 @@ class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
+    use HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -23,7 +26,7 @@ class User extends Authenticatable
         'email',
         'password',
     ];
-
+    protected $guard_name = 'web';
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -45,5 +48,14 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    public function getFullNameAttribute()
+    {
+        return "{$this->attributes['first_name']} {$this->attributes['last_name']}";
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(City::class);
     }
 }

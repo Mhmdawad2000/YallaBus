@@ -19,6 +19,8 @@ return new class extends Migration {
             $table->enum('type', ['VIP', 'ECONOMIC'])->comment('نوع الحافلة (VIP أو اقتصادية)');
             $table->text('amenities')->nullable()->comment('المرافق المتوفرة في الحافلة (مثل وايفاي، شاحنات، إلخ)');
             $table->timestamps();
+            $table->softDeletes(); // Soft deletes
+
         });
     }
 

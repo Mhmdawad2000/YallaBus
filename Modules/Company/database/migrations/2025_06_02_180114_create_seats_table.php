@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->enum('class', ['VIP', 'ECONOMIC'])->comment('درجة المقعد (VIP أو اقتصادية)');
             $table->boolean('is_available')->default(true)->comment('حالة المقعد (متاح أو محجوز)');
             $table->timestamps();
+            $table->softDeletes(); // Soft deletes
             $table->unique(['bus_id', 'seat_number'])->comment('ضمان عدم تكرار رقم المقعد في نفس الحافلة');
         });
     }

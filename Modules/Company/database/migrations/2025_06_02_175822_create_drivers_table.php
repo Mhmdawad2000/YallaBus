@@ -18,6 +18,8 @@ return new class extends Migration {
             $table->string('phone')->comment('رقم هاتف السائق للتواصل');
             $table->string('photo')->nullable()->comment('مسار صورة السائق');
             $table->timestamps();
+            $table->softDeletes(); // Soft deletes
+
         });
     }
 

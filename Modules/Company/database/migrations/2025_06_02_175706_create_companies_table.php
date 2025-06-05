@@ -19,6 +19,8 @@ return new class extends Migration {
             $table->string('contact_phone')->comment('رقم هاتف التواصل مع الشركة');
             $table->foreignId('admin_id')->constrained('users')->onDelete('cascade')->comment('المسؤول عن الشركة (مرتبط بجدول المستخدمين)');
             $table->timestamps();
+            $table->softDeletes(); // Soft deletes
+
         });
     }
 

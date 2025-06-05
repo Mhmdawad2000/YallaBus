@@ -24,6 +24,8 @@ return new class extends Migration {
             $table->enum('status', ['available', 'cancelled', 'delayed', 'completed'])->default('available')->comment('حالة الرحلة');
             $table->text('notes')->nullable()->comment('ملاحظات إضافية عن الرحلة');
             $table->timestamps();
+            $table->softDeletes(); // Soft deletes
+
         });
     }
 

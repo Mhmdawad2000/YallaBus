@@ -19,6 +19,8 @@ return new class extends Migration {
             $table->string('type')->comment('نوع الإشعار (حجز، دفع، شكوى، إلخ)');
             $table->json('data')->nullable()->comment('بيانات إضافية للإشعار (تخزن كJSON)');
             $table->timestamps();
+            $table->softDeletes(); // Soft deletes
+
         });
     }
 
