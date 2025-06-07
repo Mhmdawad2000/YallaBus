@@ -22,7 +22,7 @@
         }
 
         .header {
-            background-color: #00bfa5;
+            background-color: #007061;
             color: #ffffff;
             padding: 20px;
             text-align: center;
@@ -46,7 +46,7 @@
 
         .btn {
             display: inline-block;
-            background-color: #00bfa5;
+            background-color: #007061;
             color: #ffffff !important;
             padding: 12px 24px;
             margin-top: 20px;
