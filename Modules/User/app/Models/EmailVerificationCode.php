@@ -13,7 +13,7 @@ class EmailVerificationCode extends Model
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = [];
+    protected $fillable = ['email', 'code', 'expires_at'];
 
     // protected static function newFactory(): EmailVerificationCodeFactory
     // {
