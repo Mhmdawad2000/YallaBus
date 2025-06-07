@@ -26,7 +26,7 @@ class SignUpRepository
             'expires_at' => Carbon::now()->addMinutes(10),
         ]);
         $data = [
-            'name' => $user->first_name,
+            'name' => $user->full_name,
             'code' => $code,
             'link' => url("/auth/verify?email={$email_verify->email}&code={$email_verify->code}"),
         ];

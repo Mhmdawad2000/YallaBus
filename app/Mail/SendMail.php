@@ -27,5 +27,6 @@ class SendMail extends Mailable implements ShouldQueue
         return $this->subject($this->subject)
             ->view($this->view)
             ->with('data', $this->content);
+        // ->header('Content-Type', 'text/html; charset=UTF-8');
     }
 }
