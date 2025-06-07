@@ -1,8 +1,0 @@
-{
-    "User": true,
-    "Company": true,
-    "Trip": true,
-    "Booking": true,
-    "Payment": true,
-    "Settings": true
-}
