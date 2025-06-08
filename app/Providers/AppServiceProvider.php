@@ -20,12 +20,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-      try {
-            DB::connection()->getPdo();
-        } catch (\Exception $e) {
-            echo "❌ [DATABASE ERROR] MySQL is not running or .env config is invalid.\n";
-            echo "Reason: " . $e->getMessage() . "\n";
-            exit(1);
-        }
+    //   try {
+    //         DB::connection()->getPdo();
+    //     } catch (\Exception $e) {
+    //         echo "❌ [DATABASE ERROR] MySQL is not running or .env config is invalid.\n";
+    //         echo "Reason: " . $e->getMessage() . "\n";
+    //         exit(1);
+    //     }
     }
 }
