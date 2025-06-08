@@ -16,6 +16,12 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         [$status, $data, $code, $message] = $this->loginService->login($request);
+        if (!$request->expectsJson()) {
+            return $status
+                ? view('dash', ['user' => $data['user']])
+                : redirect()->route('login.form')->with('error', 'Incorrect data');
+        }
+
         return $status ?
             $this->successResponse($data, $code, $message) : $this->errorResponse($data, $code, $message);
     }
