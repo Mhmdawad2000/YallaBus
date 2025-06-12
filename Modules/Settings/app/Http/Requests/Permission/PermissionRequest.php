@@ -7,16 +7,16 @@ class PermissionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'changeable_name' => 'required|string|unique:permissions,changeable_name,' . $this->route('id'),
+            'name' => 'required|string|unique:permissions,changeable_name,' . $this->route('id'),
         ];
     }
 
     public function messages(): array
     {
         return [
-            'changeable_name.required' => 'حقل الاسم مطلوب.',
-            'changeable_name.string' => 'يجب أن يكون الاسم نصًا.',
-            'changeable_name.unique' => 'هذا الاسم مستخدم من قبل.',
+            'name.required' => 'حقل الاسم مطلوب.',
+            'name.string' => 'يجب أن يكون الاسم نصًا.',
+            'name.unique' => 'هذا الاسم مستخدم من قبل.',
         ];
     }
 

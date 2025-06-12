@@ -1,0 +1,81 @@
+{
+    "info": {
+        "name": "Cities CRUD - Laravel Module",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Get All Cities",
+            "request": {
+                "method": "GET",
+                "header": [{ "key": "Accept", "value": "application/json" }],
+                "url": {
+                    "raw": "http://127.0.0.1:8000/api/cities",
+                    "host": ["127.0.0.1"],
+                    "port": "8000",
+                    "path": ["api", "cities"]
+                }
+            }
+        },
+        {
+            "name": "Create City",
+            "request": {
+                "method": "POST",
+                "header": [{ "key": "Accept", "value": "application/json" }],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"name\": \"Cairo\",\n  \"user_count\": 1000000,\n  \"country_id\": 1\n}"
+                },
+                "url": {
+                    "raw": "http://127.0.0.1:8000/api/cities",
+                    "host": ["127.0.0.1"],
+                    "port": "8000",
+                    "path": ["api", "cities"]
+                }
+            }
+        },
+        {
+            "name": "Get Single City",
+            "request": {
+                "method": "GET",
+                "header": [{ "key": "Accept", "value": "application/json" }],
+                "url": {
+                    "raw": "http://127.0.0.1:8000/api/cities/1",
+                    "host": ["127.0.0.1"],
+                    "port": "8000",
+                    "path": ["api", "cities", "1"]
+                }
+            }
+        },
+        {
+            "name": "Update City",
+            "request": {
+                "method": "PUT",
+                "header": [{ "key": "Accept", "value": "application/json" }],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"name\": \"New Cairo\",\n  \"user_count\": 1500000,\n  \"country_id\": 1\n}"
+                },
+                "url": {
+                    "raw": "http://127.0.0.1:8000/api/cities/1",
+                    "host": ["127.0.0.1"],
+                    "port": "8000",
+                    "path": ["api", "cities", "1"]
+                }
+            }
+        },
+        {
+            "name": "Delete City",
+            "request": {
+                "method": "DELETE",
+                "header": [{ "key": "Accept", "value": "application/json" }],
+                "url": {
+                    "raw": "http://127.0.0.1:8000/api/cities/1",
+                    "host": ["127.0.0.1"],
+                    "port": "8000",
+                    "path": ["api", "cities", "1"]
+                }
+            }
+        }
+    ]
+}

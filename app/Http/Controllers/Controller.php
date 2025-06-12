@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-abstract class Controller
+use Illuminate\Routing\Controller as BaseController;
+
+class Controller extends BaseController
 {
     public function successResponse($data, $code = 200, $message = '')
     {
