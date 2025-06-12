@@ -3,14 +3,12 @@
 namespace Modules\Settings\Http\Controllers\API\Permission;
 
 use Exception;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\CheckPermission;
 use Symfony\Component\HttpFoundation\Response;
 use Modules\Settings\Services\Permission\IPermissionService;
 use Modules\Settings\Http\Requests\Permission\PermissionRequest;
 use Modules\Settings\Transformers\Permission\PermissionResource;
-use Modules\Settings\Transformers\Permission\PermissionCollection;
 
 /**
  * @group إدارة الصلاحيات (Permissions)
@@ -24,9 +22,9 @@ class PermissionController extends Controller
     public function __construct(IPermissionService $Permission_service)
     {
         $this->Permission_service = $Permission_service;
-        // $this->middleware(CheckPermission::class . ':read_all_permissions', ['only' => ['index']]);
-        // $this->middleware(CheckPermission::class . ':read_permission', ['only' => ['show']]);
-        // $this->middleware(CheckPermission::class . ':update_permission', ['only' => ['update']]);
+        $this->middleware(CheckPermission::class . ':read_all_permissions', ['only' => ['index']]);
+        $this->middleware(CheckPermission::class . ':read_permission', ['only' => ['show']]);
+        $this->middleware(CheckPermission::class . ':update_permission', ['only' => ['update']]);
     }
 
     /**

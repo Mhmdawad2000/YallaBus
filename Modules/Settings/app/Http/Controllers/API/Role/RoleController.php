@@ -28,12 +28,11 @@ class RoleController extends Controller
     {
         $this->role_service = $role_service;
 
-        // $this->middleware(CheckPermission::class . ':read_all_roles', ['only' => ['index']]);
-        // $this->middleware(CheckPermission::class . ':read_role', ['only' => ['show']]);
-        // $this->middleware(CheckPermission::class . ':create_role', ['only' => ['store']]);
-        // $this->middleware(CheckPermission::class . ':update_role', ['only' => ['update']]);
-        // $this->middleware(CheckPermission::class . ':delete_role', ['only' => ['destroy']]);
-        // $this->middleware(CheckPermission::class . ':read_my_role', ['only' => ['showMyRole']]);
+        $this->middleware(CheckPermission::class . ':read_all_roles', ['only' => ['index']]);
+        $this->middleware(CheckPermission::class . ':read_role', ['only' => ['show']]);
+        $this->middleware(CheckPermission::class . ':create_role', ['only' => ['store']]);
+        $this->middleware(CheckPermission::class . ':update_role', ['only' => ['update']]);
+        $this->middleware(CheckPermission::class . ':delete_role', ['only' => ['destroy']]);
     }
 
     public function index()
@@ -93,7 +92,7 @@ class RoleController extends Controller
             } elseif ($data[0] == 3) {
                 return $this->errorResponse([], Response::HTTP_NOT_FOUND, $data[1]);
             }
-            return $this->successResponse([], Response::HTTP_OK, 'تم حذف الدور بنجاح.');
+            return $this->successResponse([], Response::HTTP_CREATED, 'تم حذف الدور بنجاح.');
         } catch (Exception $e) {
             return $this->errorResponse([], Response::HTTP_BAD_REQUEST, 'فشل في حذف الدور.');
         }

@@ -21,6 +21,23 @@ return [
         ['name' => 'update_user', 'changeable_name' => 'Update User'],
         ['name' => 'delete_user', 'changeable_name' => 'Delete User'],
 
+        // Currency (TCRUD)
+        ['name' => 'toggle_default_currency', 'changeable_name' => 'Toggle Default currency'],
+        ['name' => 'read_default_currency', 'changeable_name' => 'Show Default currency'],
+        ['name' => 'create_currency', 'changeable_name' => 'Create currency'],
+        ['name' => 'update_currency', 'changeable_name' => 'Update currency'],
+        ['name' => 'delete_currency', 'changeable_name' => 'Delete currency'],
+
+        // Country (CUD)
+        ['name' => 'create_country', 'changeable_name' => 'Create Country'],
+        ['name' => 'update_country', 'changeable_name' => 'Update Country'],
+        ['name' => 'delete_country', 'changeable_name' => 'Delete Country'],
+
+        // City (CUD)
+        ['name' => 'create_city', 'changeable_name' => 'Create City'],
+        ['name' => 'update_city', 'changeable_name' => 'Update City'],
+        ['name' => 'delete_city', 'changeable_name' => 'Delete City'],
+
     ],
     'roles' => [
         ['name' => 'super-admin', 'changeable_name' => 'Super Admin'],
