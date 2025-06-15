@@ -35,8 +35,6 @@ class CurrencyRequest extends FormRequest
             'display.required' => 'حقل طريقة العرض مطلوب.',
             'display.in' => 'قيمة طريقة العرض يجب أن تكون إما "symbol" أو "name".',
 
-            'is_default.boolean' => 'يجب أن تكون قيمة الحقل الافتراضي true أو false.',
-
             'exchange_rate.required' => 'حقل سعر الصرف مطلوب.',
             'exchange_rate.numeric' => 'يجب أن يكون سعر الصرف رقماً.',
         ];
