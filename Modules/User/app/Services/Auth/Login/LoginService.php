@@ -25,6 +25,7 @@ class LoginService implements LoginInterface
             $user = User::where('email', $request->email_or_phone)
                 ->orWhere('phone', $request->email_or_phone)
                 ->first();
+            Log::info("User : ", [!$user || !Hash::check($request->password, $user->password), !$user, !Hash::check($request->password, $user->password)]);
 
             if (!$user || !Hash::check($request->password, $user->password)) {
                 return [false, null, 404, 'بيانات تسجيل الدخول غير صحيحة'];

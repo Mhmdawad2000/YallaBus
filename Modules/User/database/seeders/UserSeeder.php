@@ -25,7 +25,7 @@ class UserSeeder extends Seeder
             'first_name' => 'System',
             'last_name' => 'Admin',
             'email' => 'admin@yallabus.com',
-            'password' => Hash::make('123456uQ!'),
+            'password' => '123456uQ!',
             'code_phone' => '+963',
             'phone' => '987654321',
             'role_id' => $superAdminRole->id,

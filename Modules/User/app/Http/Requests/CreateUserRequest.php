@@ -2,15 +2,17 @@
 
 namespace Modules\User\Http\Requests;
 
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Validator;
-use Illuminate\Foundation\Http\FormRequest;
-
-class RegisterRequest extends FormRequest
+class CreateUserRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Get the validation rules that apply to the request.
      */
+
+
     public function authorize(): bool
     {
         return true; // You may implement your own logic here
@@ -36,6 +38,7 @@ class RegisterRequest extends FormRequest
             'code_phone' => 'required|string|max:10|regex:/^\+\d{2,5}$/',
             'phone' => 'required|numeric|digits_between:8,12',
             'city_id' => 'required|exists:cities,id',
+            'role_id' => 'required|exists:roles,id',
         ];
     }
 
@@ -93,6 +96,9 @@ class RegisterRequest extends FormRequest
             'city_id.required' => 'المدينة مطلوبة.',
             'city_id.exists' => 'المدينة المختارة غير موجودة.',
 
+            'role_id.required' => 'الدور مطلوب.',
+            'role_id.exists' => 'الدور المختار غير موجود.',
         ];
     }
+
 }

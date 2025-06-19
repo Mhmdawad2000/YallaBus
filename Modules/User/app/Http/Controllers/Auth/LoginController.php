@@ -19,7 +19,7 @@ class LoginController extends Controller
         if (!$request->expectsJson()) {
             return $status
                 ? view('dash', ['user' => $data['user']])
-                : redirect()->route('login.form')->with('error', 'Incorrect data');
+                : redirect()->route('welcome.form')->with('error', 'Incorrect data');
         }
 
         return $status ?

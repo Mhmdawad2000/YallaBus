@@ -13,5 +13,5 @@ Route::get('/forgot-password', [PasswordController::class, 'showLinkRequestForm'
 
 Route::get('/reset-password/{token}', [PasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('/reset-password', [PasswordController::class, 'reset'])->name('password.update');
-Route::post('/login', [LoginController::class, 'login'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('loginAction');
 

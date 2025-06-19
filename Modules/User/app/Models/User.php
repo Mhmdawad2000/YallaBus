@@ -3,12 +3,15 @@
 namespace Modules\User\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Traits\BaseFilterable;
 use Laravel\Sanctum\HasApiTokens;
 use Modules\Settings\Models\City;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\User\database\factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -18,6 +21,7 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasFactory, HasApiTokens, Notifiable;
     use HasRoles;
+    use SoftDeletes, BaseFilterable;
 
     /**
      * The attributes that are mass assignable.
