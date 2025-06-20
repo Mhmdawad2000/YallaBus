@@ -8,8 +8,10 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Nwidart\Modules\Traits\PathNamespace;
 use Modules\User\Services\Auth\Login\LoginService;
+use Modules\User\Services\UserCRUD\UserCRUDService;
 use Modules\User\Services\Auth\Login\LoginInterface;
 use Modules\User\Services\Auth\SignUp\SignUpService;
+use Modules\User\Services\UserCRUD\UserCRUDInterface;
 use Modules\User\Services\Auth\SignUp\SignUpInterface;
 use Modules\User\Services\UserManagement\UserManagementService;
 use Modules\User\Services\UserManagement\IUserManagementService;
@@ -44,6 +46,7 @@ class UserServiceProvider extends ServiceProvider
         $this->app->register(RouteServiceProvider::class);
         $this->app->bind(SignUpInterface::class, SignUpService::class);
         $this->app->bind(LoginInterface::class, LoginService::class);
+        $this->app->bind(UserCRUDInterface::class, UserCRUDService::class);
         $this->app->bind(IUserManagementService::class, UserManagementService::class);
     }
 

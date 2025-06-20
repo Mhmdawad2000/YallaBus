@@ -16,6 +16,7 @@ class SignUpRepository
 {
     public function addUser(array $data)
     {
+        $data['last_login_at'] = now();
         $user = User::create($data);
         Log::info("SignUpRepository addUser :{$user->full_name} Register successfully");
         $user->assignRole('user');

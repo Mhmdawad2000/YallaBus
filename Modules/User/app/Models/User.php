@@ -40,6 +40,7 @@ class User extends Authenticatable
         'last_login_at',
         'last_login_ip',
         'email_verified_at',
+        'avatar',
     ];
     protected $guard_name = 'web';
     /**

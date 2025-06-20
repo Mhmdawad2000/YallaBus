@@ -4,6 +4,7 @@ namespace Modules\User\Transformers\User;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Contracts\Permission;
 
 class UserResource extends JsonResource
@@ -19,6 +20,7 @@ class UserResource extends JsonResource
             "first_name" => $this->first_name,
             "last_name" => $this->last_name,
             "email" => $this->email,
+            "avatar" => $this->avatar?url(Storage::url( $this->avatar)):null,
             "code_phone" => $this->code_phone,
             "phone" => $this->phone,
             "city" => $this->when(

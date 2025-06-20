@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->string('password')->comment('كلمة المرور مشفرة');
             $table->string('code_phone')->comment('معرف الدولة الخلوي');
             $table->string('phone')->comment('رقم الهاتف المحمول');
+            $table->string('avatar')->nullable()->comment('الصورة الشخصية');
             $table->foreignId('city_id')->constrained('cities')->comment('مدينة المستخدم في النظام');
             $table->foreignId('role_id')->constrained('roles')->comment('دور المستخدم في النظام');
             $table->rememberToken()->comment('توكن للتذكر');
@@ -31,8 +32,8 @@ return new class extends Migration {
             $table->index('phone');
 
             // Additional Security
-            $table->timestamp('last_login_at')->nullable()->comment('Last successful login timestamp');
-            $table->ipAddress('last_login_ip')->nullable()->comment('IP address of last login');
+            $table->timestamp('last_login_at')->nullable()->comment('تاريخ و وقت اخر نسجيل دخول');
+            $table->ipAddress('last_login_ip')->nullable()->comment('العنوان المنطقي الذي تم تسجيل الدخول منه');
 
         });
 

@@ -1,0 +1,161 @@
+{
+    "info": {
+        "name": "User Settings API",
+        "_postman_id": "12345678-aaaa-bbbb-cccc-123456789abc",
+        "description": "Postman collection for User Settings endpoints with authentication.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Change Password",
+            "request": {
+                "method": "PATCH",
+                "header": [
+                    {
+                        "key": "Accept",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer 3|mjdQar4oqMyZjNYidcLVYCAi8NcRZ3uo8Bk8roEHd6d608a5"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"current_password\": \"oldPass123\",\n    \"new_password\": \"newPass456\",\n    \"new_password_confirmation\": \"newPass456\"\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "{{base_url}}/user/settings/change-password",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "user",
+                        "settings",
+                        "change-password"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Update Profile",
+            "request": {
+                "method": "PATCH",
+                "header": [
+                    {
+                        "key": "Accept",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer 3|mjdQar4oqMyZjNYidcLVYCAi8NcRZ3uo8Bk8roEHd6d608a5"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"city_id\": 1\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "{{base_url}}/user/settings/update-profile",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "user",
+                        "settings",
+                        "update-profile"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Update Contact Info",
+            "request": {
+                "method": "PATCH",
+                "header": [
+                    {
+                        "key": "Accept",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer 3|mjdQar4oqMyZjNYidcLVYCAi8NcRZ3uo8Bk8roEHd6d608a5"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"email\": \"john@example.com\",\n    \"code_phone\": \"+963\",\n    \"phone\": \"987654321\"\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "{{base_url}}/user/settings/update-contact-info",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "user",
+                        "settings",
+                        "update-contact-info"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Upload Avatar",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Accept",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer 3|mjdQar4oqMyZjNYidcLVYCAi8NcRZ3uo8Bk8roEHd6d608a5"
+                    }
+                ],
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "avatar",
+                            "type": "file",
+                            "src": ""
+                        }
+                    ]
+                },
+                "url": {
+                    "raw": "{{base_url}}/user/settings/avatar",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "user",
+                        "settings",
+                        "avatar"
+                    ]
+                }
+            }
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:8000"
+        }
+    ]
+}

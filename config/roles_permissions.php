@@ -38,6 +38,13 @@ return [
         ['name' => 'update_city', 'changeable_name' => 'Update City'],
         ['name' => 'delete_city', 'changeable_name' => 'Delete City'],
 
+        // User (Settings)
+        ['name' => 'change_password', 'changeable_name' => 'User Change Password'],
+        ['name' => 'update_profile', 'changeable_name' => 'User Update Profile'],
+        ['name' => 'update_contact_info', 'changeable_name' => 'User Update Contact Info'],
+        ['name' => 'upload_avatar', 'changeable_name' => 'User Upload Avatar'],
+
+
     ],
     'roles' => [
         ['name' => 'super-admin', 'changeable_name' => 'Super Admin'],
