@@ -10,4 +10,6 @@ interface UserCRUDInterface
     public function updateProfile(Request $request);
     public function updateContactInfo(Request $request);
     public function avatar(Request $request);
+    public function logo(Request $request);
+    public function me();
 }

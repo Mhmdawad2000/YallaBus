@@ -3,6 +3,7 @@
 namespace Modules\User\Http\Controllers\Mangement_Users;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\CheckPermission;
 use Modules\User\Transformers\User\UserResource;
@@ -40,7 +41,8 @@ class UserMangementController extends Controller
       }
       return $this->errorResponse([], 400, 'فشل في إضافة المستخدم');
     } catch (\Exception $e) {
-      return $this->errorResponse([], 500, 'حدث خطأ أثناء إضافة المستخدم');
+    Log::info('story user management',[$e]);
+          return $this->errorResponse([], 500, 'حدث خطأ أثناء إضافة المستخدم');
     }
   }
 

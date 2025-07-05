@@ -60,47 +60,79 @@ class UpdateUserRequest extends FormRequest
             ],
             'city_id' => 'nullable|exists:cities,id',
             'role_id' => 'nullable|exists:roles,id',
+            'company_name' => 'required_if:role_id,2|string|max:255',
+            'company_logo' => 'nullable|image|max:5120',
+            'company_description' => 'required_if:role_id,2|string|max:1000',
+            'company_contact_email' => [
+                'required_if:role_id,2',
+                'email',
+                'max:255',
+                Rule::unique('companies', 'contact_email')->ignore($userId, 'admin_id')
+            ],
+
+            'company_contact_phone' => [
+                'required_if:role_id,2',
+                'string',
+                'max:20',
+                Rule::unique('companies', 'contact_phone')->ignore($userId, 'admin_id')
+            ],
         ];
     }
 
     public function messages(): array
     {
         return [
-            // الاسم الأول
-            'first_name.string' => 'يجب أن يكون الاسم الأول نصًا',
-            'first_name.max' => 'يجب ألا يتجاوز الاسم الأول 255 حرفًا',
+            'first_name.required' => 'الاسم الأول مطلوب.',
+            'first_name.string' => 'الاسم الأول يجب أن يكون نصًا.',
+            'first_name.max' => 'الاسم الأول لا يجب أن يتجاوز 255 حرفًا.',
 
-            // الاسم الأخير
-            'last_name.string' => 'يجب أن يكون الاسم الأخير نصًا',
-            'last_name.max' => 'يجب ألا يتجاوز الاسم الأخير 255 حرفًا',
+            'last_name.required' => 'الاسم الأخير مطلوب.',
+            'last_name.string' => 'الاسم الأخير يجب أن يكون نصًا.',
+            'last_name.max' => 'الاسم الأخير لا يجب أن يتجاوز 255 حرفًا.',
 
-            // البريد الإلكتروني
-            'email.email' => 'يجب إدخال بريد إلكتروني صحيح',
-            'email.max' => 'يجب ألا يتجاوز البريد الإلكتروني 255 حرفًا',
-            'email.unique' => 'هذا البريد الإلكتروني مستخدم بالفعل',
+            'email.required' => 'البريد الإلكتروني مطلوب.',
+            'email.email' => 'يجب إدخال بريد إلكتروني صالح.',
+            'email.max' => 'البريد الإلكتروني لا يجب أن يتجاوز 255 حرفًا.',
+            'email.unique' => 'هذا البريد الإلكتروني مستخدم بالفعل.',
 
-            // كلمة المرور
-            'password.min' => 'يجب أن تتكون كلمة المرور من 8 أحرف على الأقل',
-            'password.confirmed' => 'تأكيد كلمة المرور غير متطابق',
-            'password.regex' => 'يجب أن تحتوي كلمة المرور على حرف كبير وحرف صغير ورقم ورمز خاص على الأقل',
+            'password.required' => 'كلمة المرور مطلوبة.',
+            'password.string' => 'كلمة المرور يجب أن تكون نصًا.',
+            'password.min' => 'كلمة المرور يجب أن تتكون من 6 أحرف على الأقل.',
+            'password.confirmed' => 'تأكيد كلمة المرور غير متطابق.',
+            'password.regex' => 'يجب أن تحتوي كلمة المرور على حرف صغير وحرف كبير ورقم ورمز خاص على الأقل.',
 
-            // رمز الهاتف
-            'code_phone.string' => 'يجب أن يكون رمز الهاتف نصًا',
-            'code_phone.max' => 'يجب ألا يتجاوز رمز الهاتف 10 أحرف',
-            'code_phone.regex' => 'صيغة رمز الهاتف غير صالحة (يجب أن يبدأ ب + ويتبعه أرقام)',
-            'code_phone.required_with' => 'رمز الهاتف مطلوب عند إدخال رقم الهاتف',
+            'code_phone.required' => 'رمز الاتصال مطلوب.',
+            'code_phone.string' => 'رمز الاتصال يجب أن يكون نصًا.',
+            'code_phone.max' => 'رمز الاتصال لا يجب أن يتجاوز 10 أحرف.',
+            'code_phone.regex' => 'رمز الاتصال غير صالح. يجب أن يبدأ بـ + ويتبعه من 2 إلى 5 أرقام.',
 
-            // الهاتف
-            'phone.numeric' => 'يجب أن يكون الهاتف رقمًا',
-            'phone.digits_between' => 'يجب أن يكون الهاتف بين 8 و12 رقمًا',
-            'phone.unique' => 'رقم الهاتف هذا مستخدم بالفعل',
-            'phone.required_with' => 'رقم الهاتف مطلوب عند إدخال رمز الهاتف',
+            'phone.required' => 'رقم الهاتف مطلوب.',
+            'phone.numeric' => 'رقم الهاتف يجب أن يكون أرقامًا فقط.',
+            'phone.digits_between' => 'رقم الهاتف يجب أن يتكون من 8 إلى 12 رقمًا.',
+            'phone.unique' => 'رقم الهاتف مستخدم بالفعل.',
 
-            // المدينة
-            'city_id.exists' => 'المدينة المحددة غير صالحة',
+            'city_id.required' => 'المدينة مطلوبة.',
+            'city_id.exists' => 'المدينة المختارة غير موجودة.',
 
-            // الدور
-            'role_id.exists' => 'الدور المحدد غير صالح',
+            'role_id.required' => 'الدور مطلوب.',
+            'role_id.exists' => 'الدور المختار غير موجود.',
+
+            'company_name.required_if' => 'اسم الشركة مطلوب عند اختيار نوع الحساب شركة.',
+            'company_name.string' => 'اسم الشركة يجب أن يكون نصًا.',
+            'company_name.max' => 'اسم الشركة لا يجب أن يتجاوز 255 حرفًا.',
+
+            'company_description.required_if' => 'وصف الشركة مطلوب عند اختيار نوع الحساب شركة.',
+            'company_description.string' => 'وصف الشركة يجب أن يكون نصًا.',
+            'company_description.max' => 'وصف الشركة لا يجب أن يتجاوز 1000 حرف.',
+
+            'company_contact_email.required_if' => 'البريد الإلكتروني للتواصل مطلوب.',
+            'company_contact_email.email' => 'يجب أن يكون البريد الإلكتروني للتواصل صالحًا.',
+            'company_contact_email.max' => 'البريد الإلكتروني للتواصل لا يجب أن يتجاوز 255 حرفًا.',
+            'company_contact_email.unique' => 'البريد الإلكتروني للتواصل مستخدم بالفعل.',
+
+            'company_contact_phone.required_if' => 'رقم الهاتف للتواصل مطلوب عند اختيار نوع الحساب شركة.',
+            'company_contact_phone.max' => 'الهاتف للتواصل لا يجب أن يتجاوز 255 حرفًا.',
+            'company_contact_phone.unique' => 'الهاتف للتواصل مستخدم بالفعل.',
         ];
     }
 

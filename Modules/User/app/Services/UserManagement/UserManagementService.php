@@ -5,11 +5,12 @@ namespace Modules\User\Services\UserManagement;
 
 use Illuminate\Http\Request;
 use Modules\User\Models\User;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Log;
+use Modules\Company\Models\Company;
 use Modules\User\Http\Requests\CreateUserRequest;
 use Modules\User\Http\Requests\UpdateUserRequest;
 use Modules\User\Services\UserManagement\IUserManagementService;
-use Spatie\Permission\Models\Role;
 
 class UserManagementService implements IUserManagementService
 {
@@ -17,11 +18,20 @@ class UserManagementService implements IUserManagementService
   public function store(CreateUserRequest $request): User
   {
     $data = $request->validated();
+
     $data['email_verified_at'] = now();
     $user = User::create($data);
     $role = Role::findOrFail($request->role_id);
     $user->assignRole($role->name);
-
+    if ($role->id == 2) {
+      Company::create([
+        'name' => $data['company_name'],
+        'description' => $data['company_description'],
+        'contact_phone' => $data['company_contact_phone'],
+        'contact_email' => $data['company_contact_email'],
+        'admin_id' => $user->id,
+      ]);
+    }
     return $user;
   }
 
@@ -37,7 +47,7 @@ class UserManagementService implements IUserManagementService
   }
   public function update($id, UpdateUserRequest $request)
   {
-    $data =$request->validated();
+    $data = $request->validated();
     $user = User::find($id);
     if (!$user) {
       return [
@@ -58,6 +68,15 @@ class UserManagementService implements IUserManagementService
     if ($request->filled('role_id')) {
       $role = Role::findOrFail($request->role_id);
       $user->syncRoles([$role->name]);
+      if ($role->id == 2) {
+        Company::where('admin_id', $user->id)
+          ->update([
+            'name' => $data['company_name'],
+            'description' => $data['company_description'],
+            'contact_phone' => $data['company_contact_phone'],
+            'contact_email' => $data['company_contact_email'],
+          ]);
+      }
     }
 
     $user->update($data);
@@ -86,7 +105,9 @@ class UserManagementService implements IUserManagementService
       //   Log::info("User => [ID: {$user->id}] Cannot delete: user courses exist.");
       //   return [4, []]; // User courses exist
       // }
-      $user->save();
+      if ($user->role_id == 2) {
+        Company::where('admin_id', $user->id)->delete();
+      }
       $user->delete();
 
       Log::info("User soft deleted successfully => [ID: {$user->id}]");

@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\User\database\factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Modules\Company\Models\Company;
 
 class User extends Authenticatable
 {
@@ -94,5 +95,9 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+    public function company()
+    {
+        return $this->hasOne(Company::class, 'admin_id', 'id');
     }
 }

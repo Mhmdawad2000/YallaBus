@@ -8,6 +8,7 @@ use App\Mail\SendMail;
 use Illuminate\Http\Request;
 use Modules\User\Models\User;
 use Illuminate\Support\Facades\Log;
+use Modules\Company\Models\Company;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -52,6 +53,15 @@ class UserCRUDService implements UserCRUDInterface
                 'city_id'
             ]);
             $user->update($data);
+            if ($user->role_id == 2) {
+                $data2 = [
+                    'name' => $request->company_name,
+                    'description' => $request->company_description,
+                    'contact_email' => $request->company_contact_email,
+                    'contact_phone' => $request->company_contact_phone,
+                ];
+                Company::where('admin_id', $user->id)->update($data2);
+            }
             return [1, 201, 'تم تحديث الملف الشخصي بنجاح'];
         } catch (Exception $e) {
             Log::error("UserCRUDService updateProfile : ", [$e->getMessage()]);
@@ -105,9 +115,7 @@ class UserCRUDService implements UserCRUDInterface
             if (!$user) {
                 return [2, 404, 'فشل في إيجاد المستخدم'];
             }
-            if ($user->hasRole('super-admin')) {
-                return [2, 400, 'المشرف الأعلى لا يمكن تعديله'];
-            }
+
             if ($user->avatar) {
                 Storage::disk('public')->delete($user->avatar);
             }
@@ -124,4 +132,46 @@ class UserCRUDService implements UserCRUDInterface
             return [0, 500, 'حدث خطأ أثناء تحديث الصورة الشخصية'];
         }
     }
+    public function me()
+    {
+        try {
+            $user = User::find(Auth::id());
+            if (!$user) {
+                return [2, 404, 'فشل في إيجاد المستخدم'];
+            }
+            $user->load(['city', 'role', 'role.permissions', 'company']);
+            return [1, $user, 'تم جلب بياناتك الشخصية بنجاح'];
+        } catch (Exception $e) {
+            Log::error("UserCRUDService avatar : ", [$e->getMessage()]);
+            return [0, 500, 'حدث خطأ أثناء جلب بياناتك الشخصية'];
+        }
+    }
+
+    public function logo(Request $request)
+    {
+        try {
+            $user = User::find(Auth::id());
+
+            if (!$user) {
+                return [2, 404, 'فشل في إيجاد المستخدم'];
+            }
+
+            if ($user->company->logo) {
+                Storage::disk('public')->delete($user->company->logo);
+            }
+            $path = null;
+            if ($request->file('logo')) {
+                $file = $request->file('logo');
+                $path = $file->store("logos/userID-{$user->id}/company", 'public');
+            }
+            $user->company->update(['logo' => $path]);
+            $user->load(['city', 'role', 'role.permissions', 'company']);
+            return [1, $user, 'تم تحديث لوغو الشركة بنجاح'];
+        } catch (Exception $e) {
+            Log::error("UserCRUDService logo : ", [$e->getMessage()]);
+            return [0, 500, 'حدث خطأ أثناء تحديث لوغو الشركة'];
+        }
+    }
+
+
 }

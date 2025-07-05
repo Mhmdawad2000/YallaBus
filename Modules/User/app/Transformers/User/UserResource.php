@@ -20,7 +20,7 @@ class UserResource extends JsonResource
             "first_name" => $this->first_name,
             "last_name" => $this->last_name,
             "email" => $this->email,
-            "avatar" => $this->avatar?url(Storage::url( $this->avatar)):null,
+            "avatar" => $this->avatar ? url(Storage::url($this->avatar)) : null,
             "code_phone" => $this->code_phone,
             "phone" => $this->phone,
             "city" => $this->when(
@@ -41,6 +41,20 @@ class UserResource extends JsonResource
                         'permissions' => $this->whenLoaded('role', function () {
                             return $this->role->permissions->pluck('name');
                         }),
+                    ];
+                }
+            ),
+            "company" => $this->when(
+                $this->whenLoaded('company'),
+                function () {
+                    return [
+                        'id' => $this->company->id,
+                        'name' => $this->company->name,
+                        'logo' => $this->company->logo ? url(Storage::url($this->company->logo)) : null,
+                        'contact_email' => $this->company->contact_email,
+                        'contact_phone' => $this->company->contact_phone,
+                        'description' => $this->company->description,
+
                     ];
                 }
             ),

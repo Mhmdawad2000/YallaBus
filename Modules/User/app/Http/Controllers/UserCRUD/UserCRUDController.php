@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\CheckPermission;
 use Modules\User\Transformers\User\UserResource;
+use Modules\User\Http\Requests\UserCRUD\LogoRequest;
 use Modules\User\Services\UserCRUD\UserCRUDInterface;
 use Modules\User\Http\Requests\UserCRUD\AvatarRequest;
 use Modules\User\Http\Requests\UserCRUD\UpdateProfileRequest;
@@ -64,5 +65,26 @@ class UserCRUDController extends Controller
             default => $this->errorResponse([], $data ?? 400, $message),
         };
     }
+    
+     public function logo(LogoRequest $request)
+    {
+        $request->validated();
+        [$status, $data, $message] = $this->userCRUDInterface->logo($request);
+        return match ($status) {
+            2 => $this->errorResponse([], $data ?? 400, $message),
+            1 => $this->successResponse(UserResource::make($data), 201, $message),
+            default => $this->errorResponse([], $data ?? 400, $message),
+        };
+    }
+    public function me()
+    {
+        [$status, $data, $message] = $this->userCRUDInterface->me();
+        return match ($status) {
+            2 => $this->errorResponse([], $data ?? 400, $message),
+            1 => $this->successResponse(UserResource::make($data), 201, $message),
+            default => $this->errorResponse([], $data ?? 400, $message),
+        };
+    }
+    
 
 }
