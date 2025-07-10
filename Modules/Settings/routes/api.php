@@ -2,10 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Settings\Http\Controllers\API\City\CityController;
+use Modules\Settings\Http\Controllers\API\Complaint\ComplaintController;
 use Modules\Settings\Http\Controllers\API\Role\RoleController;
 use Modules\Settings\Http\Controllers\API\Country\CountryController;
 use Modules\Settings\Http\Controllers\API\Currency\CurrencyController;
 use Modules\Settings\Http\Controllers\API\Permission\PermissionController;
+use Modules\Settings\Http\Controllers\Review\ReviewController;
 
 Route::prefix('currencies')->group(function () {
     Route::get('/', [CurrencyController::class, 'index']);
@@ -50,6 +52,17 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/', [CityController::class, 'store']);
         Route::put('/{id}', [CityController::class, 'update']);
         Route::delete('/{id}', [CityController::class, 'destroy']);
+    });
+    Route::prefix('reviwes')->group(function () {
+        Route::get('/', [ReviewController::class, 'index']);
+        Route::get('/', [ReviewController::class, 'show']);
+        Route::post('/', [ReviewController::class, 'store']);
+    });
+    Route::prefix('complaints')->group(function () {
+        Route::get('/', [ComplaintController::class, 'index']);
+        Route::get('/', [ComplaintController::class, 'show']);
+        Route::post('/', [ComplaintController::class, 'store']);
+        Route::delete('/{id}', [ComplaintController::class, 'destroy']);
     });
 
 });

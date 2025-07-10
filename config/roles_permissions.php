@@ -44,6 +44,23 @@ return [
         ['name' => 'update_contact_info', 'changeable_name' => 'User Update Contact Info'],
         ['name' => 'upload_avatar', 'changeable_name' => 'User Upload Avatar'],
 
+        // Driver (CRUD)
+        ['name' => 'read_all_drivers', 'changeable_name' => 'Show All Drivers'],
+        ['name' => 'read_driver', 'changeable_name' => 'Show Driver Info'],
+        ['name' => 'create_driver', 'changeable_name' => 'Create Driver'],
+        ['name' => 'update_driver', 'changeable_name' => 'Update Driver'],
+        ['name' => 'delete_driver', 'changeable_name' => 'Delete Driver'],
+
+        // Review (CRUD)
+        ['name' => 'read_all_reviews', 'changeable_name' => 'Show All Reviews'],
+        ['name' => 'read_review', 'changeable_name' => 'Show Review Info'],
+        ['name' => 'create_review', 'changeable_name' => 'Create Review'],
+
+        // Complaint (CRUD)
+        ['name' => 'read_all_complaints', 'changeable_name' => 'Show All Complaints'],
+        ['name' => 'read_complaint', 'changeable_name' => 'Show Complaint Info'],
+        ['name' => 'create_complaint', 'changeable_name' => 'Create Complaint'],
+        ['name' => 'delete_complaint', 'changeable_name' => 'Delete Complaint'],
 
     ],
     'roles' => [
@@ -53,5 +70,131 @@ return [
         ['name' => 'user', 'changeable_name' => 'User'],
         ['name' => 'default', 'changeable_name' => 'Default'],
     ],
+
+
+
+    'super-admin' => [
+
+        // Role (CRUD)
+        'read_all_roles',
+        'read_role',
+        'create_role',
+        'update_role',
+        'delete_role',
+
+        // Permission (RU)
+        'read_all_permissions',
+        'read_permission',
+        'update_permission',
+
+        // User (CRUD)
+        'read_all_users',
+        'read_user',
+        'create_user',
+        'update_user',
+        'delete_user',
+
+        // Currency (TCRUD)
+        'toggle_default_currency',
+        'read_default_currency',
+        'create_currency',
+        'update_currency',
+        'delete_currency',
+
+        // Country (CUD)
+        'create_country',
+        'update_country',
+        'delete_country',
+
+        // City (CUD)
+        'create_city',
+        'update_city',
+        'delete_city',
+
+        // User (Settings)
+        'change_password',
+        'update_profile',
+        'update_contact_info',
+        'upload_avatar',
+
+        // Review (CRUD)
+        'read_all_reviews',
+        'read_review',
+
+        // Complaint (CRUD)
+        'read_all_complaints',
+        'read_complaint',
+        'delete_complaint',
+
+    ],
+
+
+
+
+    'company-admin' => [
+        // User (Settings)
+        'change_password',
+        'update_profile',
+        'update_contact_info',
+        'upload_avatar',
+
+        // Driver (CRUD)
+        'read_all_drivers',
+        'read_driver',
+        'create_driver',
+        'update_driver',
+        'delete_driver',
+    ],
+
+
+
+
+    'complaint-reviewer' => [
+
+        // User (Settings)
+        'change_password',
+        'update_profile',
+        'update_contact_info',
+        'upload_avatar',
+
+        // Review (CRUD)
+        'read_all_reviews',
+        'read_review',
+
+        // Complaint (CRUD)
+        'read_all_complaints',
+        'read_complaint',
+    ],
+
+
+
+    'user' => [
+
+        // User (Settings)
+        'change_password',
+        'update_profile',
+        'update_contact_info',
+        'upload_avatar',
+
+        // Review (CRUD)
+        'create_review',
+
+        // Complaint (CRUD)
+        'read_complaint',
+        'create_complaint',
+        'delete_complaint',
+    ],
+
+
+    'default' => [
+
+        // User (Settings)
+        'change_password',
+        'update_profile',
+        'update_contact_info',
+        'upload_avatar',
+    ],
+
+
 
 ];

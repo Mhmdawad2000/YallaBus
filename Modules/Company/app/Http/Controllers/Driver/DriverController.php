@@ -2,10 +2,11 @@
 
 namespace Modules\Company\Http\Controllers\Driver;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Modules\Company\Http\Requests\Driver\DriverRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Middleware\CheckPermission;
 use Modules\Company\Services\Driver\DriverInterface;
+use Modules\Company\Http\Requests\Driver\DriverRequest;
 use Modules\Company\Transformers\Driver\DriverResource;
 use Modules\Company\Transformers\Driver\DriverCollection;
 
@@ -16,6 +17,11 @@ class DriverController extends Controller
     public function __construct(DriverInterface $driverInterface)
     {
         $this->driverInterface = $driverInterface;
+        $this->middleware(CheckPermission::class . ':create_driver', ['only' => ['store']]);
+        $this->middleware(CheckPermission::class . ':read_all_drivers', ['only' => ['index']]);
+        $this->middleware(CheckPermission::class . ':read_driver', ['only' => ['show']]);
+        $this->middleware(CheckPermission::class . ':update_driver', ['only' => ['update']]);
+        $this->middleware(CheckPermission::class . ':delete_driver', ['only' => ['destroy']]);
     }
 
     public function index(string $role, Request $request)

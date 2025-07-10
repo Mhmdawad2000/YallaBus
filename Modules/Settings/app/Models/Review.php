@@ -2,21 +2,32 @@
 
 namespace Modules\Settings\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-// use Modules\Settings\Database\Factories\ReviewFactory;
-
-class Review extends Model
+use App\Models\BaseModel;
+use Modules\Trip\Models\Trip;
+use Modules\User\Models\User;
+class Review extends BaseModel
 {
-    use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'trip_id',
+        'rating',
+        'comment',
+    ];
 
     /**
-     * The attributes that are mass assignable.
+     * Get the user who wrote the review.
      */
-    protected $fillable = [];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
-    // protected static function newFactory(): ReviewFactory
-    // {
-    //     // return ReviewFactory::new();
-    // }
+    /**
+     * Get the trip that was reviewed.
+     */
+    public function trip()
+    {
+        return $this->belongsTo(Trip::class);
+    }
 }

@@ -2,21 +2,40 @@
 
 namespace Modules\Settings\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
+use Modules\User\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Modules\Settings\Database\Factories\SystemLogFactory;
 
-class SystemLog extends Model
+class SystemLog extends BaseModel
 {
     use HasFactory;
+    protected $table = 'system_logs';
+    protected $fillable = [
+        'model_type',
+        'model_id',
+        'action',
+        'old_data',
+        'new_data',
+        'user_id',
+        'ip_address',
+        'user_agent',
+        'notification_title',
+        'notification_body',
+        'comments',
+    ];
+    protected $casts = [
+        'old_data' => 'array',
+        'new_data' => 'array',
+    ];
 
-    /**
-     * The attributes that are mass assignable.
-     */
-    protected $fillable = [];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
-    // protected static function newFactory(): SystemLogFactory
-    // {
-    //     // return SystemLogFactory::new();
-    // }
+    public function model()
+    {
+        return $this->morphTo();
+    }
 }

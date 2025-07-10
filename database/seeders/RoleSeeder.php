@@ -41,17 +41,8 @@ class RoleSeeder extends Seeder
                 $roleModel = $existingRole;
             }
 
-            switch ($roleData['name']) {
-                case 'super-admin':
-                    $permissions = collect(config('roles_permissions.permissions'))
-                        ->pluck('name')
-                        ->toArray();
-
-                    $roleModel->syncPermissions($permissions);
-                    break;
-                default:
-                    break;
-            }
+            $permissions = collect(config('roles_permissions.' . $roleData['name']));
+            $roleModel->givePermissionTo($permissions->toArray());
         });
 
         // Clear the role cache

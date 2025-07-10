@@ -11,14 +11,26 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('system_logs', function (Blueprint $table) {
-            $table->id()->comment('المعرف الفريد للسجل');
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null')->comment('المستخدم المسؤول عن الحدث إن وجد');
-            $table->string('action')->comment('العملية التي تم تسجيلها');
-            $table->text('details')->nullable()->comment('تفاصيل إضافية عن الحدث');
-            $table->string('ip_address')->nullable()->comment('عنوان IP مصدر الحدث');
-            $table->string('user_agent')->nullable()->comment('معلومات المتصفح أو الجهاز');
+            $table->id();
+            $table->string('model_type', 100); // اسم الموديل (مثلاً: App\Models\User)
+            $table->unsignedBigInteger('model_id'); // أي دي الموديل
+            $table->string('action'); // create, update, delete, restore
+            $table->text('notification_title')->nullable();
+            $table->text('notification_body')->nullable();
+            $table->text('comments')->nullable();
+            $table->json('old_data')->nullable(); // البيانات القديمة
+            $table->json('new_data')->nullable(); // البيانات الجديدة
+            $table->integer('user_id')->nullable(); // اليوزر الذي قام بالعملية
+            $table->string('ip_address')->nullable(); // عنوان IP
+            $table->string('user_agent')->nullable(); // متصفح المستخدم
             $table->timestamps();
-            $table->softDeletes(); // Soft deletes
+            $table->softDeletes();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+            $table->index(['model_type', 'model_id']);
+            $table->index('user_id');
+            $table->index('created_at');
+            $table->engine = 'Aria';
 
         });
     }
