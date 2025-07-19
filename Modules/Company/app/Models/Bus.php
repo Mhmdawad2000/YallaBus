@@ -2,21 +2,60 @@
 
 namespace Modules\Company\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-// use Modules\Company\Database\Factories\BusFactory;
 
-class Bus extends Model
+class Bus extends BaseModel
 {
-    use HasFactory;
+    use SoftDeletes, HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     */
-    protected $fillable = [];
+    protected $fillable = [
+        'company_id',
+        'plate_number',
+        'model',
+        'capacity',
+        'type',
+        'amenities',
+    ];
 
-    // protected static function newFactory(): BusFactory
-    // {
-    //     // return BusFactory::new();
-    // }
+    protected $casts = [
+        'amenities' => 'array',
+    ];
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+    public function seats()
+    {
+        return $this->hasMany(Seat::class);
+    }
+
+
+    protected static function booted()
+    {
+        static::created(function ($bus) {
+            $bus->createSeatsAutomatically();
+        });
+    }
+
+    protected function createSeatsAutomatically()
+    {
+        $seats = [];
+        $now = now();
+
+        for ($i = 1; $i <= $this->capacity; $i++) {
+            $seats[] = [
+                'bus_id' => $this->id,
+                'seat_number' => $i,
+                'class' => $this->type,
+                'is_available' => true,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ];
+        }
+
+        Seat::insert($seats);
+    }
 }

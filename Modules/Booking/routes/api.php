@@ -3,6 +3,13 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Booking\Http\Controllers\BookingController;
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
-    Route::apiResource('bookings', BookingController::class)->names('booking');
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::prefix('bookings')->group(function () {
+        Route::get('/', [BookingController::class, 'index']);
+        Route::post('/', [BookingController::class, 'store']);
+        Route::get('/{id}', [BookingController::class, 'show']);
+        Route::put('/{id}', [BookingController::class, 'update']);
+        Route::delete('/{id}', [BookingController::class, 'destroy']);
+        Route::post('/{id}/cancel', [BookingController::class, 'cancel']);
+    });
 });
