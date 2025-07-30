@@ -38,6 +38,10 @@ class Bus extends BaseModel
         static::created(function ($bus) {
             $bus->createSeatsAutomatically();
         });
+
+        static::deleting(function ($bus) {
+            $bus->seats()->delete();
+        });
     }
 
     protected function createSeatsAutomatically()

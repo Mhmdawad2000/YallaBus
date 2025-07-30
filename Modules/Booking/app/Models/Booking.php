@@ -26,7 +26,10 @@ class Booking extends BaseModel
         'total_price' => 'decimal:2',
         'cancelled_at' => 'datetime',
     ];
-
+    public function bookingSeats()
+    {
+        return $this->hasMany(BookingSeat::class);
+    }
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -55,5 +58,12 @@ class Booking extends BaseModel
     public function scopeCompleted($query)
     {
         return $query->where('status', 'completed');
+    }
+
+    protected static function booted()
+    {
+        static::deleting(callback: function ($booking) {
+            $booking->bookingSeats()->delete();
+        });
     }
 }

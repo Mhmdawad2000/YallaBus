@@ -32,6 +32,20 @@ class BookingController extends Controller
             $message
         );
     }
+    public function meIndex(Request $request)
+    {
+        [$status, $data, $code, $message] = $this->bookingInterface->meIndex($request);
+
+        if (!$status) {
+            return $this->errorResponse($data, $code, $message);
+        }
+
+        return $this->successResponse(
+            new BookingCollection($data),
+            $code,
+            $message
+        );
+    }
 
     public function store(BookingRequest $request)
     {
@@ -63,20 +77,20 @@ class BookingController extends Controller
         );
     }
 
-    public function update(BookingRequest $request, $id)
-    {
-        [$status, $data, $code, $message] = $this->bookingInterface->update($request, $id);
+    // public function update(BookingRequest $request, $id)
+    // {
+    //     [$status, $data, $code, $message] = $this->bookingInterface->update($request, $id);
 
-        if (!$status) {
-            return $this->errorResponse($data, $code, $message);
-        }
+    //     if (!$status) {
+    //         return $this->errorResponse($data, $code, $message);
+    //     }
 
-        return $this->successResponse(
-            new BookingResource($data),
-            $code,
-            $message
-        );
-    }
+    //     return $this->successResponse(
+    //         new BookingResource($data),
+    //         $code,
+    //         $message
+    //     );
+    // }
 
     public function destroy($id)
     {
@@ -93,7 +107,24 @@ class BookingController extends Controller
     {
         [$status, $data, $code, $message] = $this->bookingInterface->cancel(
             $id,
-            $request->input('cancellation_reason')
+            $request
+        );
+
+        if (!$status) {
+            return $this->errorResponse($data, $code, $message);
+        }
+
+        return $this->successResponse(
+            new BookingResource($data),
+            $code,
+            $message
+        );
+    }
+    public function status($id, Request $request)
+    {
+        [$status, $data, $code, $message] = $this->bookingInterface->status(
+            $id,
+            $request
         );
 
         if (!$status) {

@@ -37,6 +37,8 @@ class Seat extends BaseModel
                 throw new \Exception('لا يمكن إضافة مقعد جديد، لقد تم الوصول إلى السعة القصوى.');
             }
         });
+
+       
     }
 
 }
