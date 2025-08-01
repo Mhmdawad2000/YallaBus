@@ -45,7 +45,7 @@ class UserResource extends JsonResource
                 }
             ),
             "company" => $this->when(
-                $this->whenLoaded('company'),
+                $this->whenLoaded('company') && $this->company,
                 function () {
                     return [
                         'id' => $this->company->id,
