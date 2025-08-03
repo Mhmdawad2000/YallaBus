@@ -192,11 +192,11 @@ return [
         'delete_seat',
 
         // Trip (CRUD)
-        'read_all_Trips',
-        'read_Trip',
-        'create_Trip',
-        'update_Trip',
-        'delete_Trip',
+        'read_all_trips',
+        'read_trip',
+        'create_trip',
+        'update_trip',
+        'delete_trip',
         'update_trip_status',
         'read_my_trips',
 
@@ -252,7 +252,7 @@ return [
         'cancel_booking',
 
         // Trip(R)
-        'read_all_Trips',
+        'read_all_trips',
 
     ],
 
