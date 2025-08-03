@@ -15,8 +15,8 @@ return new class extends Migration {
             $table->foreignId('company_id')->constrained()->onDelete('cascade')->comment('الشركة المنظمة للرحلة');
             $table->foreignId('bus_id')->constrained()->onDelete('cascade')->comment('الحافلة المستخدمة في الرحلة');
             $table->foreignId('driver_id')->constrained()->onDelete('cascade')->comment('السائق المسؤول عن الرحلة');
-            $table->string('departure_city')->comment('مدينة المغادرة');
-            $table->string('arrival_city')->comment('مدينة الوصول');
+            $table->foreignId('departure_city_id')->constrained('cities')->onDelete('cascade')->comment('مدينة المغادرة');
+            $table->foreignId('arrival_city_id')->constrained('cities')->onDelete('cascade')->comment('مدينة الوصول');
             $table->dateTime('departure_time')->comment('تاريخ ووقت المغادرة');
             $table->dateTime('arrival_time')->comment('تاريخ ووقت الوصول المتوقع');
             $table->decimal('price', 8, 2)->comment('سعر الرحلة');
