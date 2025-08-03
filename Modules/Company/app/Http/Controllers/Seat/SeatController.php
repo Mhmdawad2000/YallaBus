@@ -2,10 +2,11 @@
 
 namespace Modules\Company\Http\Controllers\Seat;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Modules\Company\Http\Requests\Seat\SeatRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Middleware\CheckPermission;
 use Modules\Company\Services\Seat\SeatInterface;
+use Modules\Company\Http\Requests\Seat\SeatRequest;
 use Modules\Company\Transformers\Seat\SeatResource;
 use Modules\Company\Transformers\Seat\SeatCollection;
 
@@ -16,7 +17,13 @@ class SeatController extends Controller
     public function __construct(SeatInterface $seatInterface)
     {
         $this->seatInterface = $seatInterface;
+        $this->middleware(CheckPermission::class . ':create_seat', ['only' => ['store']]);
+        $this->middleware(CheckPermission::class . ':read_all_seats', ['only' => ['index']]);
+        $this->middleware(CheckPermission::class . ':read_seat', ['only' => ['show']]);
+        $this->middleware(CheckPermission::class . ':update_seat', ['only' => ['update']]);
+        $this->middleware(CheckPermission::class . ':delete_seat', ['only' => ['destroy']]);
     }
+
 
     public function index(Request $request)
     {

@@ -2,10 +2,11 @@
 
 namespace Modules\Booking\Http\Controllers\Booking;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Modules\Booking\Http\Requests\Booking\BookingRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Middleware\CheckPermission;
 use Modules\Booking\Services\Booking\BookingInterface;
+use Modules\Booking\Http\Requests\Booking\BookingRequest;
 use Modules\Booking\Transformers\Booking\BookingResource;
 use Modules\Booking\Transformers\Booking\BookingCollection;
 
@@ -16,6 +17,13 @@ class BookingController extends Controller
     public function __construct(BookingInterface $bookingInterface)
     {
         $this->bookingInterface = $bookingInterface;
+        $this->middleware(CheckPermission::class . ':create_booking', ['only' => ['store']]);
+        $this->middleware(CheckPermission::class . ':read_all_bookings', ['only' => ['index']]);
+        $this->middleware(CheckPermission::class . ':read_my_bookings', ['only' => ['meIndex']]);
+        $this->middleware(CheckPermission::class . ':read_booking', ['only' => ['show']]);
+        $this->middleware(CheckPermission::class . ':delete_booking', ['only' => ['destroy']]);
+        $this->middleware(CheckPermission::class . ':cancel_booking', ['only' => ['cancel']]);
+        $this->middleware(CheckPermission::class . ':change_status_booking', ['only' => ['status']]);
     }
 
     public function index(Request $request)

@@ -2,10 +2,11 @@
 
 namespace Modules\Company\Http\Controllers\Bus;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Modules\Company\Http\Requests\Bus\BusRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Middleware\CheckPermission;
 use Modules\Company\Services\Bus\BusInterface;
+use Modules\Company\Http\Requests\Bus\BusRequest;
 use Modules\Company\Transformers\Bus\BusResource;
 use Modules\Company\Transformers\Bus\BusCollection;
 
@@ -16,6 +17,11 @@ class BusController extends Controller
     public function __construct(BusInterface $busInterface)
     {
         $this->busInterface = $busInterface;
+         $this->middleware(CheckPermission::class . ':create_bus', ['only' => ['store']]);
+        $this->middleware(CheckPermission::class . ':read_all_buses', ['only' => ['index']]);
+        $this->middleware(CheckPermission::class . ':read_bus', ['only' => ['show']]);
+        $this->middleware(CheckPermission::class . ':update_bus', ['only' => ['update']]);
+        $this->middleware(CheckPermission::class . ':delete_bus', ['only' => ['destroy']]);
     }
 
     public function index(Request $request)

@@ -41,7 +41,8 @@ class BookingRequest extends FormRequest
                         $subQuery->select('seat_id')
                             ->from('booking_seats')
                             ->join('bookings', 'booking_seats.booking_id', '=', 'bookings.id')
-                            ->where('bookings.status', '!=', 'completed');
+                            ->where('bookings.status', '!=', 'completed')
+                            ->where('bookings.status', '!=', 'cancelled');
                     });
                 }),
             ],
