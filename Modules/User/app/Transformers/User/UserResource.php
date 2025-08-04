@@ -37,7 +37,8 @@ class UserResource extends JsonResource
                 function () {
                     return [
                         'id' => $this->role->id,
-                        'name' => $this->role->changeable_name,
+                        'name' => $this->role->name,
+                        'changeable_name' => $this->role->changeable_name,
                         'permissions' => $this->whenLoaded('role', function () {
                             return $this->role->permissions->pluck('name');
                         }),
@@ -45,7 +46,7 @@ class UserResource extends JsonResource
                 }
             ),
             "company" => $this->when(
-                $this->whenLoaded('company'),
+                $this->whenLoaded('company') && $this->company,
                 function () {
                     return [
                         'id' => $this->company->id,

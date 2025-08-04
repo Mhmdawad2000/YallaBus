@@ -2,21 +2,43 @@
 
 namespace Modules\Company\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-// use Modules\Company\Database\Factories\SeatFactory;
 
-class Seat extends Model
+class Seat extends BaseModel
 {
-    use HasFactory;
+    use SoftDeletes, HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     */
-    protected $fillable = [];
+    protected $fillable = [
+        'bus_id',
+        'seat_number',
+        'class',
+        'is_available'
+    ];
 
-    // protected static function newFactory(): SeatFactory
-    // {
-    //     // return SeatFactory::new();
-    // }
+    public function bus()
+    {
+        return $this->belongsTo(Bus::class);
+    }
+
+    protected static function booted()
+    {
+        static::creating(function ($seat) {
+            $bus = Bus::find($seat->bus_id);
+
+            if (!$bus) {
+                throw new \Exception('الحافلة غير موجودة.');
+            }
+
+            $seatsCount = $bus->seats()->count();
+
+            if ($seatsCount >= $bus->capacity) {
+                throw new \Exception('لا يمكن إضافة مقعد جديد، لقد تم الوصول إلى السعة القصوى.');
+            }
+        });
+
+       
+    }
+
 }

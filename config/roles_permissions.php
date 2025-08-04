@@ -62,6 +62,38 @@ return [
         ['name' => 'create_complaint', 'changeable_name' => 'Create Complaint'],
         ['name' => 'delete_complaint', 'changeable_name' => 'Delete Complaint'],
 
+        //Booking
+        ['name' => 'read_all_bookings', 'changeable_name' => 'Show All Bookings'],
+        ['name' => 'read_my_bookings', 'changeable_name' => 'Show My Bookings'],
+        ['name' => 'change_status_booking', 'changeable_name' => 'Change Status Booking'],
+        ['name' => 'create_booking', 'changeable_name' => 'Create Booking'],
+        ['name' => 'read_booking', 'changeable_name' => 'Show Booking'],
+        ['name' => 'delete_booking', 'changeable_name' => 'Delete Booking'],
+        ['name' => 'cancel_booking', 'changeable_name' => 'Cancel Booking'],
+
+
+        // Bus (CRUD)
+        ['name' => 'read_all_buses', 'changeable_name' => 'Show All Buses'],
+        ['name' => 'read_bus', 'changeable_name' => 'Show Bus Info'],
+        ['name' => 'create_bus', 'changeable_name' => 'Create Bus'],
+        ['name' => 'update_bus', 'changeable_name' => 'Update Bus'],
+        ['name' => 'delete_bus', 'changeable_name' => 'Delete Bus'],
+
+        // Seat (CRUD)
+        ['name' => 'read_all_seats', 'changeable_name' => 'Show All Seats'],
+        ['name' => 'read_seat', 'changeable_name' => 'Show Seat Info'],
+        ['name' => 'create_seat', 'changeable_name' => 'Create Seat'],
+        ['name' => 'update_seat', 'changeable_name' => 'Update Seat'],
+        ['name' => 'delete_seat', 'changeable_name' => 'Delete Seat'],
+
+        // Trip (CRUD)
+        ['name' => 'read_all_trips', 'changeable_name' => 'Show All Trips'],
+        ['name' => 'read_trip', 'changeable_name' => 'Show Trip Info'],
+        ['name' => 'create_trip', 'changeable_name' => 'Create Trip'],
+        ['name' => 'update_trip', 'changeable_name' => 'Update Trip'],
+        ['name' => 'delete_trip', 'changeable_name' => 'Delete Trip'],
+        ['name' => 'read_my_trips', 'changeable_name' => 'Show My Trips'],
+        ['name' => 'update_trip_status', 'changeable_name' => 'Update Trip Status'],
     ],
     'roles' => [
         ['name' => 'super-admin', 'changeable_name' => 'Super Admin'],
@@ -144,6 +176,35 @@ return [
         'create_driver',
         'update_driver',
         'delete_driver',
+
+        // Bus (CRUD)
+        'read_all_buses',
+        'read_bus',
+        'create_bus',
+        'update_bus',
+        'delete_bus',
+
+        // Seat (CRUD)
+        'read_all_seats',
+        'read_seat',
+        'create_seat',
+        'update_seat',
+        'delete_seat',
+
+        // Trip (CRUD)
+        'read_all_trips',
+        'read_trip',
+        'create_trip',
+        'update_trip',
+        'delete_trip',
+        'update_trip_status',
+        'read_my_trips',
+
+        // Booking(RDC)
+        'read_all_bookings',
+        'read_booking',
+        'change_status_booking',
+        'delete_booking',
     ],
 
 
@@ -183,11 +244,20 @@ return [
         'read_complaint',
         'create_complaint',
         'delete_complaint',
+
+        // Booking(RCCM)
+        'read_my_bookings',
+        'read_booking',
+        'create_booking',
+        'cancel_booking',
+
+        // Trip(R)
+        'read_all_trips',
+
     ],
 
 
     'default' => [
-
         // User (Settings)
         'change_password',
         'update_profile',
