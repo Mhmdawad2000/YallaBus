@@ -23,7 +23,7 @@ class BookingController extends Controller
         $this->middleware(CheckPermission::class . ':read_booking', ['only' => ['show']]);
         $this->middleware(CheckPermission::class . ':delete_booking', ['only' => ['destroy']]);
         $this->middleware(CheckPermission::class . ':cancel_booking', ['only' => ['cancel']]);
-        $this->middleware(CheckPermission::class . ':change_status_booking', ['only' => ['status']]);
+        // $this->middleware(CheckPermission::class . ':change_status_booking', ['only' => ['status']]);
     }
 
     public function index(Request $request)
@@ -128,21 +128,21 @@ class BookingController extends Controller
             $message
         );
     }
-    public function status($id, Request $request)
-    {
-        [$status, $data, $code, $message] = $this->bookingInterface->status(
-            $id,
-            $request
-        );
+    // public function status($id, Request $request)
+    // {
+    //     [$status, $data, $code, $message] = $this->bookingInterface->status(
+    //         $id,
+    //         $request
+    //     );
 
-        if (!$status) {
-            return $this->errorResponse($data, $code, $message);
-        }
+    //     if (!$status) {
+    //         return $this->errorResponse($data, $code, $message);
+    //     }
 
-        return $this->successResponse(
-            new BookingResource($data),
-            $code,
-            $message
-        );
-    }
+    //     return $this->successResponse(
+    //         new BookingResource($data),
+    //         $code,
+    //         $message
+    //     );
+    // }
 }

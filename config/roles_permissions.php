@@ -93,7 +93,7 @@ return [
         ['name' => 'update_trip', 'changeable_name' => 'Update Trip'],
         ['name' => 'delete_trip', 'changeable_name' => 'Delete Trip'],
         ['name' => 'read_my_trips', 'changeable_name' => 'Show My Trips'],
-        ['name' => 'update_trip_status', 'changeable_name' => 'Update Trip Status'],
+        // ['name' => 'update_trip_status', 'changeable_name' => 'Update Trip Status'],
     ],
     'roles' => [
         ['name' => 'super-admin', 'changeable_name' => 'Super Admin'],
@@ -197,7 +197,7 @@ return [
         'create_trip',
         'update_trip',
         'delete_trip',
-        'update_trip_status',
+        // 'update_trip_status',
         'read_my_trips',
 
         // Booking(RDC)

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Modules\Booking\Models\Booking;
 use Illuminate\Support\Facades\Auth;
 use Modules\Trip\Http\Requests\Trip\TripRequest;
+use Modules\Booking\Models\BookingSeat;
 
 class TripService implements TripInterface
 {
@@ -177,17 +178,38 @@ class TripService implements TripInterface
             if (!in_array($status, ['available', 'cancelled', 'delayed', 'completed'])) {
                 return [false, [], 400, 'حالة الرحلة غير صالحة'];
             }
+
+            // Handle trip cancellation with proper booking updates
             if ($status == 'cancelled') {
-                Booking::where('trip_id', $trip->id)->update([
-                    'status' => 'cancelled',
-                    'cancelled_at' => now(),
-                ]);
+                $bookings = Booking::where('trip_id', $trip->id)
+                    ->where('status', '!=', 'cancelled')
+                    ->with('user')
+                    ->get();
+
+                foreach ($bookings as $booking) {
+                    // Update booking status
+                    $booking->update([
+                        'status' => 'cancelled',
+                        'cancelled_at' => now(),
+                        'cancellation_reason' => 'تم إلغاء الرحلة من قبل الشركة'
+                    ]);
+
+                    // Refund user balance
+                    $booking->user->addBalance(
+                        $booking->total_price,
+                        'استرداد مبلغ الحجز - إلغاء الرحلة',
+                        $booking->id
+                    );
+                }
+
+                // Update available seats count
+                $trip->update(['available_seats' => $trip->bus->seats()->count()]);
             }
 
             if ($status == 'completed') {
-                Booking::where('trip_id', $trip->id)->update([
-                    'status' => 'completed',
-                ]);
+                Booking::where('trip_id', $trip->id)
+                    ->where('status', 'pending')
+                    ->update(['status' => 'completed']);
             }
 
             $trip->update(['status' => $status]);
@@ -220,5 +242,35 @@ class TripService implements TripInterface
             return [false, [], 403, 'غير مصرح لك بالوصول.'];
         }
         return null;
+    }
+
+    /**
+     * Update available seats count for a trip
+     */
+    public function updateAvailableSeats($tripId)
+    {
+        try {
+            $trip = Trip::with('bus.seats')->find($tripId);
+            if (!$trip) {
+                return false;
+            }
+
+            // Count booked seats for this trip
+            $bookedSeatsCount = BookingSeat::whereHas('booking', function ($query) use ($tripId) {
+                $query->where('trip_id', $tripId)
+                    ->where('status', '!=', 'cancelled');
+            })->count();
+
+            // Calculate available seats
+            $totalSeats = $trip->bus->seats()->count();
+            $availableSeats = $totalSeats - $bookedSeatsCount;
+
+            $trip->update(['available_seats' => max(0, $availableSeats)]);
+
+            return true;
+        } catch (\Exception $e) {
+            Log::error('TripService@updateAvailableSeats: ' . $e->getMessage());
+            return false;
+        }
     }
 }
