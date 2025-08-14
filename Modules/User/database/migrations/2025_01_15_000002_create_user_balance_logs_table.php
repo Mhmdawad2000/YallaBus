@@ -10,7 +10,7 @@ return new class extends Migration {
             $table->id(); // Unique identifier for the log entry
             $table->unsignedBigInteger('user_id')->nullable(); // Reference to the user
             // $table->unsignedBigInteger('currency_id')->default(1); // You can uncomment if currency_id is needed
-            $table->unsignedBigInteger('booking')->nullable();
+            $table->unsignedBigInteger('booking_id')->nullable();
 
             $table->decimal('old_balance', 10, 2); // Old balance before the change
             $table->decimal('new_balance', 10, 2); // New balance after the change
@@ -20,7 +20,7 @@ return new class extends Migration {
 
             // Relationships
             $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
-            $table->foreign('booking_id')->references('id')->on('bookings')->nullOnDelete();
+            $table->foreign('booking_id')->references('id')->on('bookings')->onDelete('set null');
         });
     }
 
