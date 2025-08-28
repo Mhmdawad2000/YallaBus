@@ -6,9 +6,13 @@ use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\Company\Services\Bus\BusInterface;
+use Modules\Company\Services\Bus\BusService;
 use Nwidart\Modules\Traits\PathNamespace;
 use Modules\Company\Services\Driver\DriverService;
 use Modules\Company\Services\Driver\DriverInterface;
+use Modules\Company\Services\Seat\SeatInterface;
+use Modules\Company\Services\Seat\SeatService;
 
 class CompanyServiceProvider extends ServiceProvider
 {
@@ -39,7 +43,8 @@ class CompanyServiceProvider extends ServiceProvider
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
         $this->app->bind(DriverInterface::class, DriverService::class);
-
+        $this->app->bind(BusInterface::class, BusService::class);
+        $this->app->bind(SeatInterface::class, SeatService::class);
     }
 
     /**
