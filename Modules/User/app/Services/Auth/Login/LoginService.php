@@ -1,6 +1,7 @@
 <?php
 
 namespace Modules\User\Services\Auth\Login;
+
 use Exception;
 use Illuminate\Http\Request;
 use Modules\User\Models\User;
@@ -25,7 +26,6 @@ class LoginService implements LoginInterface
             $user = User::where('email', $request->email_or_phone)
                 ->orWhere('phone', $request->email_or_phone)
                 ->first();
-            Log::info("User : ", [!$user || !Hash::check($request->password, $user->password), !$user, !Hash::check($request->password, $user->password)]);
 
             if (!$user || !Hash::check($request->password, $user->password)) {
                 return [false, null, 404, 'بيانات تسجيل الدخول غير صحيحة'];
@@ -40,5 +40,4 @@ class LoginService implements LoginInterface
             return [false, null, 500, 'حدث خطأ أثناء محاولة تسجيل الدخول'];
         }
     }
-
 }
