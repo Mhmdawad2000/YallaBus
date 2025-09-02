@@ -81,36 +81,36 @@ class Trip extends BaseModel
         return $query->where('departure_time', '<', now());
     }
 
-    public function scopeFilter($query, Request $request)
-    {
-        if ($request->has('departure_city_id')) {
-            $query->where('departure_city_id', $request->departure_city_id);
-        }
+    // public function scopeFilter($query, Request $request)
+    // {
+    //     if ($request->has('departure_city_id')) {
+    //         $query->where('departure_city_id', $request->departure_city_id);
+    //     }
 
-        if ($request->has('arrival_city_id')) {
-            $query->where('arrival_city_id', $request->arrival_city_id);
-        }
+    //     if ($request->has('arrival_city_id')) {
+    //         $query->where('arrival_city_id', $request->arrival_city_id);
+    //     }
 
-        if ($request->has('departure_date')) {
-            $query->whereDate('departure_time', $request->departure_date);
-        }
+    //     if ($request->has('departure_date')) {
+    //         $query->whereDate('departure_time', $request->departure_date);
+    //     }
 
-        if ($request->has('status')) {
-            $query->where('status', $request->status);
-        }
+    //     if ($request->has('status')) {
+    //         $query->where('status', $request->status);
+    //     }
 
-        if ($request->has('min_price')) {
-            $query->where('price', '>=', $request->min_price);
-        }
+    //     if ($request->has('min_price')) {
+    //         $query->where('price', '>=', $request->min_price);
+    //     }
 
-        if ($request->has('max_price')) {
-            $query->where('price', '<=', $request->max_price);
-        }
+    //     if ($request->has('max_price')) {
+    //         $query->where('price', '<=', $request->max_price);
+    //     }
 
-        if ($request->has('company_id')) {
-            $query->where('company_id', $request->company_id);
-        }
+    //     if ($request->has('company_id')) {
+    //         $query->where('company_id', $request->company_id);
+    //     }
 
-        return $query;
-    }
+    //     return $query;
+    // }
 }
