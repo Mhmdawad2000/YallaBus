@@ -14,5 +14,5 @@ interface BookingInterface
     // public function update(BookingRequest $request, $id);
     public function destroy($id);
     public function cancel($id, Request $request);
-    public function status($id, Request $request);
+    // public function status($id, Request $request);
 }

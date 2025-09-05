@@ -42,6 +42,7 @@ class User extends Authenticatable
         'last_login_ip',
         'email_verified_at',
         'avatar',
+        'balance',
     ];
     protected $guard_name = 'web';
     /**
@@ -81,6 +82,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'balance' => 'decimal:2',
         ];
     }
     public function getFullNameAttribute()
@@ -99,5 +101,72 @@ class User extends Authenticatable
     public function company()
     {
         return $this->hasOne(Company::class, 'admin_id', 'id');
+    }
+
+    /**
+     * Get the balance logs for the user.
+     */
+    public function balanceLogs()
+    {
+        return $this->hasMany(UserBalanceLog::class);
+    }
+
+    /**
+     * Add amount to user balance and log the transaction.
+     */
+    public function addBalance(float $amount, string $reason, ?int $bookingId = null): void
+    {
+        $oldBalance = $this->balance;
+        $this->increment('balance', $amount);
+        $this->refresh();
+
+        UserBalanceLog::create([
+            'user_id' => $this->id,
+            'booking_id' => $bookingId,
+            'old_balance' => $oldBalance,
+            'new_balance' => $this->balance,
+            'reason' => $reason,
+        ]);
+    }
+
+    /**
+     * Deduct amount from user balance and log the transaction.
+     */
+    public function deductBalance(float $amount, string $reason, ?int $bookingId = null): bool
+    {
+        if ($this->balance < $amount) {
+            return false; // Insufficient balance
+        }
+
+        $oldBalance = $this->balance;
+        $this->decrement('balance', $amount);
+        $this->refresh();
+
+        UserBalanceLog::create([
+            'user_id' => $this->id,
+            'booking_id' => $bookingId,
+            'old_balance' => $oldBalance,
+            'new_balance' => $this->balance,
+            'reason' => $reason,
+        ]);
+
+        return true;
+    }
+
+    /**
+     * Set user balance to a specific amount and log the transaction.
+     */
+    public function setBalance(float $amount, string $reason, ?int $bookingId = null): void
+    {
+        $oldBalance = $this->balance;
+        $this->update(['balance' => $amount]);
+
+        UserBalanceLog::create([
+            'user_id' => $this->id,
+            'booking_id' => $bookingId,
+            'old_balance' => $oldBalance,
+            'new_balance' => $amount,
+            'reason' => $reason,
+        ]);
     }
 }

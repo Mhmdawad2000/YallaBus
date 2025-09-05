@@ -12,6 +12,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
         // Route::put('/{id}', [BookingController::class, 'update']);
         Route::delete('/{id}', [BookingController::class, 'destroy']);
         Route::post('/{id}/cancel', [BookingController::class, 'cancel']);
-        Route::post('/{id}/status', [BookingController::class, 'status']);
+        // Route::post('/{id}/status', [BookingController::class, 'status']);
     });
 });

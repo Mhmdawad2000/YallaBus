@@ -59,6 +59,7 @@ class UserResource extends JsonResource
                     ];
                 }
             ),
+            "balance" => $this->balance,
         ];
     }
 }

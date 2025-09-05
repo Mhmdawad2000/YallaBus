@@ -2,55 +2,48 @@
 
 namespace Modules\Payment\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Modules\User\Models\User;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Modules\User\Models\UserBalanceLog;
 
 class PaymentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         return view('payment::index');
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function create(Request $request)
     {
-        return view('payment::create');
+        $request->validate([
+            'amount' => 'required|numeric|min:1',
+            'stripeToken' => 'required|string|min:1',
+        ]);
+        $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
+
+        $amount = $request->amount * 100;
+        $source = $request->stripeToken;
+        $charge = $stripe->charges->create([
+            'amount' => $amount,
+            'currency' => 'usd',
+            'source' => $source,
+            'description' => 'from backend www.yallabus.com'
+        ]);
+        if ($charge->status == "successed") {
+            $dollar2cookies = config('paymant.dollar2cookies');
+            $user = User::find(Auth::id());
+            $old_balance = $user->balance;
+            $user->increment('balance', $amount * $dollar2cookies);
+            UserBalanceLog::create([
+                'user_id' => $user->id,
+                'old_balance' => $old_balance,
+                'new_balance' => $user->balance,
+                'reason' => 'Charge Balance By Payment',
+            ]);
+            return $this->errorResponse([], 400, 'تم شحن رصيدك');
+        }
+        return $this->errorResponse([], 400, 'فشل شحن رصيدك');
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request) {}
-
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
-    {
-        return view('payment::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('payment::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id) {}
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id) {}
 }
