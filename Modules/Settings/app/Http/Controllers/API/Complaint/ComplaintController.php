@@ -4,11 +4,13 @@ namespace Modules\Settings\Http\Controllers\API\Complaint;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Modules\Settings\Models\Complaint;
 use App\Http\Middleware\CheckPermission;
 use Modules\Settings\Services\Complaint\ComplaintInterface;
 use Modules\Settings\Http\Requests\Complaint\ComplaintRequest;
 use Modules\Settings\Transformers\Complaint\ComplaintResource;
 use Modules\Settings\Transformers\Complaint\ComplaintCollection;
+use Modules\Settings\Http\Requests\Complaint\ComplaintResolveRequest;
 
 class ComplaintController extends Controller
 {
@@ -21,6 +23,20 @@ class ComplaintController extends Controller
         $this->middleware(CheckPermission::class . ':read_all_complaints', ['only' => ['index']]);
         $this->middleware(CheckPermission::class . ':read_complaint', ['only' => ['show']]);
         $this->middleware(CheckPermission::class . ':delete_complaint', ['only' => ['destroy']]);
+        $this->middleware(CheckPermission::class . ':resolve_complaint', ['only' => ['resolve']]);
+    }
+
+
+
+    public function resolve(ComplaintResolveRequest $request, Complaint $complaint)
+    {
+        [$status, $result] = $this->complaintInterface->resolveOrClose($complaint, $request->validated());
+
+        if ($status) {
+            return $this->successResponse($result, 'Complaint updated successfully.');
+        }
+
+        return $this->errorResponse($result, 'Failed to update complaint.');
     }
 
     public function index(Request $request)
