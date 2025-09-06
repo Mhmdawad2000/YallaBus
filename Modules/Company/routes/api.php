@@ -22,7 +22,7 @@ Route::middleware(['auth:sanctum'])->prefix('{role}')->group(function () {
 
     Route::prefix('seats')->group(function () {
         Route::get('', [SeatController::class, 'index']);
-        Route::post('', [SeatController::class, 'store']);
+        Route::post('', action: [SeatController::class, 'store']);
         Route::get('/{id}', [SeatController::class, 'show']);
         Route::put('/{id}', [SeatController::class, 'update']);
         Route::delete('/{id}', [SeatController::class, 'destroy']);

@@ -124,7 +124,8 @@ class BusService implements BusInterface
                 return [false, [], 404, 'الشركة غير موجودة.'];
             }
 
-            $bus = Bus::where('company_id', $company->id)->find($id);
+            $bus = Bus::where('company_id', $company->id)->where('id', $id)->first();
+            Log::info("MHD HEG", [$bus, $company]);
             if (!$bus) {
                 return [false, [], 404, 'الحافلة غير موجودة.'];
             }
