@@ -2,6 +2,7 @@
 
 namespace Modules\Settings\Services\Complaint;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -10,6 +11,22 @@ use Modules\Settings\Http\Requests\Complaint\ComplaintRequest;
 
 class ComplaintService implements ComplaintInterface
 {
+
+    public function resolveOrClose(Complaint $complaint, array $data): array
+    {
+        try {
+            $complaint->update([
+                'status'      => $data['status'],
+                'resolution'  => $data['resolution'] ?? null,
+                'resolved_by' => Auth::id(),
+                'resolved_at' => Carbon::now(),
+            ]);
+
+            return [true, $complaint];
+        } catch (\Exception $e) {
+            return [false, $e->getMessage()];
+        }
+    }
     public function index(Request $request)
     {
         try {

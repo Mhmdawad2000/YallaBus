@@ -61,6 +61,7 @@ return [
         ['name' => 'read_complaint', 'changeable_name' => 'Show Complaint Info'],
         ['name' => 'create_complaint', 'changeable_name' => 'Create Complaint'],
         ['name' => 'delete_complaint', 'changeable_name' => 'Delete Complaint'],
+        ['name' => 'resolve_complaint', 'changeable_name' => 'Resolve Complaint'],
 
         //Booking
         ['name' => 'read_all_bookings', 'changeable_name' => 'Show All Bookings'],
@@ -225,6 +226,7 @@ return [
         // Complaint (CRUD)
         'read_all_complaints',
         'read_complaint',
+        'resolve_complaint'
     ],
 
 
