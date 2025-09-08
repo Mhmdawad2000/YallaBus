@@ -125,7 +125,8 @@ class BusService implements BusInterface
             }
 
             $bus = Bus::where('company_id', $company->id)->where('id', $id)->first();
-            Log::info("MHD HEG", [$bus, $company]);
+            // 2|pl8dDIQFSXdWkyKt7r9r7OoPB2jWzxt8W4c1LoRp0e2fd007
+            // 3|bj4m2H0rvSWE4OLxBJjlProrbTLObsioNjAgjYwY93d7b4e9
             if (!$bus) {
                 return [false, [], 404, 'الحافلة غير موجودة.'];
             }

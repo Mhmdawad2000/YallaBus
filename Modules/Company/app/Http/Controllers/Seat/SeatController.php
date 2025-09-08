@@ -25,7 +25,7 @@ class SeatController extends Controller
     }
 
 
-    public function index(Request $request)
+    public function index($role,Request $request)
     {
         [$status, $data, $code, $message] = $this->seatInterface->index($request);
 
@@ -40,7 +40,7 @@ class SeatController extends Controller
         );
     }
 
-    public function store(SeatRequest $request)
+    public function store($role,SeatRequest $request)
     {
         [$status, $data, $code, $message] = $this->seatInterface->store($request);
 
@@ -55,7 +55,7 @@ class SeatController extends Controller
         );
     }
 
-    public function show($id)
+    public function show($role,$id)
     {
         [$status, $data, $code, $message] = $this->seatInterface->show($id);
 
@@ -70,7 +70,7 @@ class SeatController extends Controller
         );
     }
 
-    public function update(SeatRequest $request, $id)
+    public function update($role,SeatRequest $request, $id)
     {
         [$status, $data, $code, $message] = $this->seatInterface->update($request, $id);
 
@@ -85,7 +85,7 @@ class SeatController extends Controller
         );
     }
 
-    public function destroy($id)
+    public function destroy($role,$id)
     {
         [$status, $data, $code, $message] = $this->seatInterface->destroy($id);
 

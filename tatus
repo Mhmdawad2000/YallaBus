@@ -1,0 +1,109 @@
+*   [33m6341350[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdevelopment[m[33m)[m Merge branch 'development' of https://github.com/Mhmdawad2000/YallaBus into development
+[31m|[m[32m\[m  
+[31m|[m * [33m20a17b7[m[33m ([m[1;31morigin/development[m[33m)[m Add binding booking
+[31m|[m * [33m641bcd9[m[33m ([m[1;31morigin/BindAdded-MHD-HEG[m[33m)[m Still there's problems
+[31m|[m *   [33m1100f96[m Merge pull request #22 from mhmd-laravel-wd/trips-suggestions
+[31m|[m [33m|[m[34m\[m  
+[31m|[m [33m|[m * [33m29c11b9[m[33m ([m[1;31morigin/trips-suggestions[m[33m)[m Do the api/trips/suggestions
+[31m|[m [33m|[m[33m/[m  
+[31m|[m *   [33m7d2f34d[m Merge pull request #21 from mhmd-laravel-wd/Nejah
+[31m|[m [35m|[m[36m\[m  
+[31m|[m [35m|[m * [33mefd3432[m[33m ([m[1;31morigin/Nejah[m[33m)[m i was add nejah.php file for test
+[31m|[m [35m|[m[35m/[m  
+[31m|[m * [33m05d1568[m fix 234334
+[31m|[m * [33md1dc46a[m last verission
+[31m|[m * [33m1bd3803[m last verission
+[31m|[m [36m|[m * [33m9175409[m[33m ([m[1;35mrefs/stash[m[33m)[m WIP on development: 10f0116 Merge branch 'development' of https://github.com/Mhmdawad2000/YallaBus into development
+[31m|[m [36m|[m[31m/[m[1;32m|[m 
+[31m|[m[31m/[m[36m|[m [1;32m|[m 
+[31m|[m [36m|[m * [33mc58f833[m index on development: 10f0116 Merge branch 'development' of https://github.com/Mhmdawad2000/YallaBus into development
+[31m|[m [36m|[m[31m/[m  
+[31m|[m[31m/[m[36m|[m   
+* [36m|[m [33m10f0116[m Merge branch 'development' of https://github.com/Mhmdawad2000/YallaBus into development
+[1;33m|[m[36m\[m[36m|[m 
+[1;33m|[m * [33m3424a35[m fix UserResource
+[1;33m|[m *   [33m88598ba[m Merge pull request #19 from Mhmdawad2000/Booking-Trip
+[1;33m|[m [1;35m|[m[1;36m\[m  
+[1;33m|[m [1;35m|[m * [33me159076[m[33m ([m[1;31morigin/Booking-Trip[m[33m)[m bokking cmp fix
+[1;33m|[m * [1;36m|[m [33md90cc07[m Merge pull request #18 from Mhmdawad2000/Booking-Trip
+[1;33m|[m [31m|[m[1;36m\[m[1;36m|[m 
+[1;33m|[m [31m|[m * [33m9f3f348[m bokking cmp
+[1;33m|[m [31m|[m * [33medd4ad1[m ver 1.244.2
+[1;33m|[m [31m|[m * [33maaacd72[m fix ReveiwController namespace
+[1;33m|[m [31m|[m * [33mcef53f4[m V1 of bookings and trips
+* [31m|[m [32m|[m [33md1280ac[m fix ReviewController namespace
+[32m|[m [31m|[m[32m/[m  
+[32m|[m[32m/[m[31m|[m   
+[32m|[m [31m|[m * [33me400eec[m[33m ([m[1;31morigin/Cors-Error-Solved[m[33m)[m Fixed  Cors Error
+[32m|[m [31m|[m[31m/[m  
+[32m|[m * [33m8837456[m UserResource.php update
+[32m|[m[32m/[m  
+* [33mbc5c735[m compleated settings module
+* [33mce2be7c[m add driver scenario
+* [33md6de365[m add company with user management
+* [33mf1afbaa[m complete user settings
+* [33mbf6d873[m User Manegement
+* [33m02b15d0[m add currency
+*   [33m31a484a[m Merge pull request #17 from Mhmdawad2000/complete-settings
+[34m|[m[35m\[m  
+[34m|[m * [33mea22e90[m[33m ([m[1;31morigin/complete-settings[m[33m)[m complete Settings Module
+[34m|[m[34m/[m  
+*   [33mc3ccfea[m Merge pull request #16 from Mhmdawad2000/Setting/Role-Permission
+[36m|[m[1;31m\[m  
+[36m|[m * [33ma5e6e62[m[33m ([m[1;31morigin/Setting/Role-Permission[m[33m)[m do the role and permission settings
+[36m|[m[36m/[m  
+*   [33m2075f0d[m Merge pull request #15 from Mhmdawad2000/auth/completed
+[1;32m|[m[1;33m\[m  
+[1;32m|[m * [33md79304d[m[33m ([m[1;31morigin/auth/completed[m[33m)[m fix login and reset password
+* [1;33m|[m [33m237ab2d[m Merge pull request #14 from Mhmdawad2000/auth/completed
+[1;34m|[m[1;33m\[m[1;33m|[m 
+[1;34m|[m * [33mfde12e9[m fix the exists jobs table issue
+* [1;35m|[m [33mf4b1d1b[m Merge pull request #13 from Mhmdawad2000/auth/completed
+[1;36m|[m[1;35m\[m[1;35m|[m 
+[1;36m|[m * [33m6e808dc[m Fix Settings module fix 2
+[1;36m|[m * [33mac2a0f5[m Fix Settings module
+[1;36m|[m * [33m518b034[m Fix PSR-4 autoload for modules
+* [31m|[m [33m0bbfd8d[m Merge pull request #11 from Mhmdawad2000/auth/completed
+[32m|[m[31m\[m[31m|[m 
+[32m|[m * [33m0bc735a[m fix3
+* [33m|[m [33m1c5f2a8[m Merge pull request #10 from Mhmdawad2000/auth/completed
+[34m|[m[33m\[m[33m|[m 
+[34m|[m * [33mf7f6b46[m fix 2
+* [35m|[m [33mf3120b5[m Merge pull request #9 from Mhmdawad2000/auth/completed
+[36m|[m[35m\[m[35m|[m 
+[36m|[m * [33mc59f329[m fix 1
+* [1;31m|[m [33mc877c75[m Merge pull request #8 from Mhmdawad2000/auth/completed
+[1;32m|[m[1;31m\[m[1;31m|[m 
+[1;32m|[m * [33md5bc11e[m auth completed2
+* [1;33m|[m [33m0885537[m Update composer.json
+[1;33m|[m [1;33m|[m *   [33m6bc79c4[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m Merge pull request #7 from Mhmdawad2000/revert-6-development
+[1;33m|[m [1;33m|[m [1;34m|[m[1;35m\[m  
+[1;33m|[m [1;33m|[m [1;34m|[m * [33m2699326[m[33m ([m[1;31morigin/revert-6-development[m[33m)[m Revert "Development"
+[1;33m|[m [1;33m|[m [1;34m|[m[1;34m/[m  
+[1;33m|[m [1;33m|[m *   [33m15d2b07[m Merge pull request #6 from Mhmdawad2000/development
+[1;33m|[m [1;33m|[m [1;36m|[m[1;33m\[m  
+[1;33m|[m [1;33m|[m[1;33m_[m[1;36m|[m[1;33m/[m  
+[1;33m|[m[1;33m/[m[1;33m|[m [1;36m|[m   
+* [1;33m|[m [1;36m|[m [33mb12c59e[m Merge pull request #5 from Mhmdawad2000/auth/completed
+[32m|[m[1;33m\[m[1;33m|[m [1;36m|[m 
+[32m|[m * [1;36m|[m [33m9781e86[m auth completed
+[32m|[m[32m/[m [1;36m/[m  
+* [1;36m|[m   [33mf42fc97[m Merge pull request #4 from Mhmdawad2000/auth/register-and-verifiy-and-login
+[34m|[m[35m\[m [1;36m\[m  
+[34m|[m * [1;36m|[m [33m517f9cc[m[33m ([m[1;31morigin/auth/register-and-verifiy-and-login[m[33m)[m auth with out reset password
+[34m|[m[34m/[m [1;36m/[m  
+* [1;36m|[m   [33m2239d23[m Merge pull request #3 from Mhmdawad2000/fix-ClassBookingServiceProviderNotFound
+[36m|[m[1;31m\[m [1;36m\[m  
+[36m|[m * [1;36m|[m [33ma693ac8[m[33m ([m[1;31morigin/fix-ClassBookingServiceProviderNotFound[m[33m)[m fix ERROR->Class ModulesBookingProvidersBookingServiceProvider not found
+[36m|[m[36m/[m [1;36m/[m  
+* [1;36m|[m   [33m9fb38f7[m Merge pull request #1 from Mhmdawad2000/init-rolesAndPermissions
+[1;32m|[m[1;33m\[m [1;36m\[m  
+[1;32m|[m * [1;36m|[m [33m6095dae[m[33m ([m[1;31morigin/init-rolesAndPermissions[m[33m)[m init the roles and permissions
+* [1;33m|[m [1;36m|[m [33m2f37158[m Merge pull request #2 from Mhmdawad2000/UserMudeule-FixUserName
+[1;34m|[m[1;33m\[m[1;33m|[m [1;36m|[m 
+[1;34m|[m * [1;36m|[m [33m89a06ae[m[33m ([m[1;31morigin/UserMudeule-FixUserName[m[33m)[m fix te name user to first and last name
+[1;34m|[m[1;34m/[m [1;36m/[m  
+* [1;36m|[m [33m08bf36f[m init database v1
+* [1;36m|[m [33md41a4d9[m Initial project
+[1;36m|[m[1;36m/[m  
+* [33m386c9cc[m Initial commit

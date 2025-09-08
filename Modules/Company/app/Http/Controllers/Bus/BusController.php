@@ -24,7 +24,7 @@ class BusController extends Controller
         $this->middleware(CheckPermission::class . ':delete_bus', ['only' => ['destroy']]);
     }
 
-    public function index(Request $request)
+    public function index($role,Request $request)
     {
         [$status, $data, $code, $message] = $this->busInterface->index($request);
 
@@ -39,7 +39,7 @@ class BusController extends Controller
         );
     }
 
-    public function store(BusRequest $request)
+    public function store($role,BusRequest $request)
     {
         [$status, $data, $code, $message] = $this->busInterface->store($request);
 
@@ -54,7 +54,7 @@ class BusController extends Controller
         );
     }
 
-    public function show($id)
+    public function show($role,$id)
     {
         [$status, $data, $code, $message] = $this->busInterface->show($id);
 
@@ -69,7 +69,7 @@ class BusController extends Controller
         );
     }
 
-    public function update(BusRequest $request, $id)
+    public function update(BusRequest $request,$role, $id)
     {
         [$status, $data, $code, $message] = $this->busInterface->update($request, $id);
 
@@ -84,7 +84,7 @@ class BusController extends Controller
         );
     }
 
-    public function destroy($id)
+    public function destroy($role,$id)
     {
         [$status, $data, $code, $message] = $this->busInterface->destroy($id);
 
