@@ -7,7 +7,7 @@ use Modules\Settings\Http\Controllers\API\Role\RoleController;
 use Modules\Settings\Http\Controllers\API\Country\CountryController;
 use Modules\Settings\Http\Controllers\API\Currency\CurrencyController;
 use Modules\Settings\Http\Controllers\API\Permission\PermissionController;
-use Modules\Settings\Http\Controllers\Review\ReviewController;
+use Modules\Settings\Http\Controllers\API\Review\ReviewController;
 
 Route::prefix('currencies')->group(function () {
     Route::get('/', [CurrencyController::class, 'index']);
@@ -63,6 +63,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/', [ComplaintController::class, 'show']);
         Route::post('/', [ComplaintController::class, 'store']);
         Route::delete('/{id}', [ComplaintController::class, 'destroy']);
+        Route::post('/{id}', [ComplaintController::class, 'resolve']);
     });
 
 });
