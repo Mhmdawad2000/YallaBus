@@ -119,7 +119,7 @@ class BookingService implements BookingInterface
                 DB::rollBack();
                 return [false, [], 400, 'فشل في خصم المبلغ من الرصيد'];
             }
-            
+
             // update booking status
             $booking->update(['status' => 'confirmed']);
 
