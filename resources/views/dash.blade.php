@@ -15,12 +15,9 @@
             <p style="text-align: center">{{ $user->email }}</p>
             <h4 style="text-align: center">
                 {{ $user->city->name . ' - ' . $user->role->name . ' - ' . $user->code_phone . $user->phone }}</h4>
+            <h4 style="text-align: center">
+                {{ $user->balance }} Cash</h4>
+
         </div>
     </div>
 @endsection
-<script>
-    function togglePassword(id) {
-        const input = document.getElementById(id);
-        input.type = input.type === 'password' ? 'text' : 'password';
-    }
-</script>
