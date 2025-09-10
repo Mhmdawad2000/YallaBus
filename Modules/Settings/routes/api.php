@@ -55,7 +55,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
     Route::prefix('reviwes')->group(function () {
         Route::get('/', [ReviewController::class, 'index']);
-        Route::get('/', [ReviewController::class, 'show']);
+        Route::get('/{id}', [ReviewController::class, 'show']);
         Route::post('/', [ReviewController::class, 'store']);
     });
     Route::prefix('complaints')->group(function () {
@@ -65,5 +65,4 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::delete('/{id}', [ComplaintController::class, 'destroy']);
         Route::post('/{id}', [ComplaintController::class, 'resolve']);
     });
-
 });

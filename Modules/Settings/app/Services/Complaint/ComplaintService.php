@@ -44,6 +44,7 @@ class ComplaintService implements ComplaintInterface
     public function store(ComplaintRequest $request)
     {
         try {
+            $request['status'] = 'pending';
             $data = $request->validated();
             $data['user_id'] = Auth::id();
             Complaint::create($data);
