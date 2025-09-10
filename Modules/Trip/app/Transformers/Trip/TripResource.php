@@ -19,6 +19,13 @@ class TripResource extends JsonResource
                 'id' => $this->bus->id,
                 'plate_number' => $this->bus->plate_number,
                 'model' => $this->bus->model,
+                'seats' => $this->bus->seats->map(function ($seat) {
+                    return [
+                        'id' => $seat->id,
+                        'number' => $seat->seat_number,
+                        'status' => $seat->is_available, // مثلاً متاح / محجوز
+                    ];
+                }),
             ],
             'driver' => [
                 'id' => $this->driver->id,
