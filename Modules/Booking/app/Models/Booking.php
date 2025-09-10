@@ -5,6 +5,7 @@ namespace Modules\Booking\Models;
 use App\Models\BaseModel;
 use Modules\Trip\Models\Trip;
 use Modules\User\Models\User;
+use Modules\Company\Models\Seat;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -58,6 +59,10 @@ class Booking extends BaseModel
     public function scopeCompleted($query)
     {
         return $query->where('status', 'completed');
+    }
+    public function seats()
+    {
+        return $this->belongsToMany(Seat::class, 'booking_seats');
     }
 
     protected static function booted()

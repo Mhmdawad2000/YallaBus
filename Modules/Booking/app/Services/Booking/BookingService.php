@@ -70,10 +70,10 @@ class BookingService implements BookingInterface
                 // Check if seat is already booked for this trip
                 if (
                     BookingSeat::where('seat_id', $seatId)
-                        ->whereHas('booking', function ($q) use ($trip) {
-                            $q->where('trip_id', $trip->id)
-                                ->where('status', '!=', 'cancelled');
-                        })->exists()
+                    ->whereHas('booking', function ($q) use ($trip) {
+                        $q->where('trip_id', $trip->id)
+                            ->where('status', '!=', 'cancelled');
+                    })->exists()
                 ) {
                     DB::rollBack();
                     return [false, [], 400, "المقعد $seatId محجوز بالفعل"];
@@ -111,6 +111,7 @@ class BookingService implements BookingInterface
                     'seat_id' => $seatId,
                     'price' => $seatPrice, // Use the correct seat price
                 ]);
+                Seat::where('id', $seatId)->update(['is_available' => false]);
             }
 
             // Deduct balance with proper parameters
@@ -119,7 +120,7 @@ class BookingService implements BookingInterface
                 DB::rollBack();
                 return [false, [], 400, 'فشل في خصم المبلغ من الرصيد'];
             }
-            
+
             // update booking status
             $booking->update(['status' => 'confirmed']);
 
@@ -189,6 +190,13 @@ class BookingService implements BookingInterface
             if (!($isOwner || $isAdmin)) {
                 return [false, [], 403, 'غير مصرح لك بحذف هذا الحجز'];
             }
+            /// ✅ تحديث حالة المقاعد المرتبطة بالحجز
+            $seatIds = $booking->seats->pluck('id')->toArray();
+            if (!empty($seatIds)) {
+                Seat::whereIn('id', $seatIds)
+                    ->update(['is_available' => true]);
+            }
+
             $booking->delete();
 
             return [true, null, 200, 'تم حذف الحجز بنجاح'];
@@ -231,6 +239,13 @@ class BookingService implements BookingInterface
             $refundAmount = $booking->total_price;
 
             // Update booking status
+            /// ✅ تحديث حالة المقاعد المرتبطة بالحجز
+            $seatIds = $booking->seats->pluck('id')->toArray();
+            if (!empty($seatIds)) {
+                Seat::whereIn('id', $seatIds)
+                    ->update(['is_available' => true]);
+            }
+            
             $booking->update([
                 'status' => 'cancelled',
                 'cancelled_at' => now(),

@@ -32,6 +32,8 @@ class Bus extends BaseModel
         return $this->hasMany(Seat::class);
     }
 
+    
+
 
     protected static function booted()
     {
