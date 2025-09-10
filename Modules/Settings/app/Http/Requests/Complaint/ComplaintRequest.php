@@ -21,7 +21,7 @@ class ComplaintRequest extends FormRequest
             'booking_id' => ['nullable', 'exists:bookings,id'],
             'subject' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
-            'status' => ['required', 'string', 'in:pending,resolved,rejected'],
+            'status' => ['required', 'string', 'in:open,in_progress,resolved,closed'],
             // 'resolution' => ['nullable', 'string', 'required_if:status,resolved'],
             // 'resolved_by' => ['nullable', 'exists:users,id', 'required_if:status,resolved'],
         ];
@@ -44,7 +44,7 @@ class ComplaintRequest extends FormRequest
 
             'status.required' => 'حالة الشكوى مطلوبة.',
             'status.string' => 'حالة الشكوى يجب أن تكون نصاً.',
-            'status.in' => 'حالة الشكوى يجب أن تكون واحدة من: pending, resolved, rejected.',
+            'status.in' => 'حالة الشكوى يجب أن تكون واحدة من: open, resolved, closed.',
 
             'resolution.string' => 'حل الشكوى يجب أن يكون نصاً.',
             'resolution.required_if' => 'حل الشكوى مطلوب عند تحديد الحالة كـ resolved.',

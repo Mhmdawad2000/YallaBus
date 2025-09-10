@@ -28,15 +28,19 @@ class ComplaintController extends Controller
 
 
 
-    public function resolve(ComplaintResolveRequest $request, Complaint $complaint)
+    public function resolve(ComplaintResolveRequest $request, int $id)
     {
+        $complaint = Complaint::find($id);
+        if (!$complaint) {
+            return $this->errorResponse([], 404, 'Not found complaint.');
+        }
         [$status, $result] = $this->complaintInterface->resolveOrClose($complaint, $request->validated());
 
         if ($status) {
-            return $this->successResponse($result, 'Complaint updated successfully.');
+            return $this->successResponse($result, 201, 'Complaint updated successfully.');
         }
 
-        return $this->errorResponse($result, 'Failed to update complaint.');
+        return $this->errorResponse($result, 400, 'Failed to update complaint.');
     }
 
     public function index(Request $request)
