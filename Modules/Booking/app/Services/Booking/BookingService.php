@@ -245,7 +245,7 @@ class BookingService implements BookingInterface
                 Seat::whereIn('id', $seatIds)
                     ->update(['is_available' => true]);
             }
-            
+
             $booking->update([
                 'status' => 'cancelled',
                 'cancelled_at' => now(),
@@ -256,10 +256,10 @@ class BookingService implements BookingInterface
             $user = $booking->user;
             $refundResult = $user->addBalance($refundAmount * 0.9, 'استرداد مبلغ الحجز الملغي', $booking->id);
 
-            if (!$refundResult) {
-                DB::rollBack();
-                return [false, [], 400, 'فشل في استرداد المبلغ'];
-            }
+            // if (!$refundResult) {
+            //     DB::rollBack();
+            //     return [false, [], 400, 'فشل في استرداد المبلغ'];
+            // }
 
             DB::commit();
             return [true, $booking, 200, 'تم إلغاء الحجز بنجاح وتم استرداد 90% من المبلغ'];
