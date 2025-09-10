@@ -33,7 +33,8 @@ class PaymentController extends Controller
             ]);
             $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
 
-            $amount = $request->amount * 100;
+            $amountCash = $request->amount;
+            $amount = (int)$request->amount * 100;
             $source = $request->stripeToken;
             $charge = $stripe->charges->create([
                 'amount' => $amount,
@@ -45,13 +46,17 @@ class PaymentController extends Controller
                 $dollar2cookies = config('paymant.dollar2cookies');
                 $user = User::find(Auth::id());
                 $old_balance = $user->balance;
-                $user->increment('balance', $amount * $dollar2cookies);
+                $user->increment('balance', $amountCash * $dollar2cookies);
                 UserBalanceLog::create([
                     'user_id' => $user->id,
                     'old_balance' => $old_balance,
                     'new_balance' => $user->balance,
                     'reason' => 'Charge Balance By Payment',
                 ]);
+                if (!$request->expectsJson()) {
+                    $user = User::find(Auth::id());
+                    return view('dash', ['user' => $user]);
+                }
                 return $this->errorResponse([], 201, 'تم شحن رصيدك');
             }
             return $this->errorResponse([], 400, 'فشل شحن رصيدك');
