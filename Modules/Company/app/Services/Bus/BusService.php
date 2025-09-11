@@ -134,7 +134,10 @@ class BusService implements BusInterface
             if (!$bus) {
                 return [false, [], 404, 'الحافلة غير موجودة.'];
             }
-
+            $is_has_trip = Trip::where(['status' => 'available', 'bus_id', $bus->id])->exists();
+            if ($is_has_trip) {
+                return [false, [], 400, 'لا يمكن حذف حافلة لديها رحلة قائمة'];
+            }
             $bus->delete();
 
             return [true, null, 200, 'تم حذف الحافلة بنجاح.'];

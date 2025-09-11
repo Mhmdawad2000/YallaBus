@@ -3,6 +3,7 @@
 namespace Modules\Company\Services\Driver;
 
 use Illuminate\Http\Request;
+use Modules\Trip\Models\Trip;
 use Modules\User\Models\User;
 use Modules\Company\Models\Driver;
 use Illuminate\Support\Facades\Log;
@@ -108,7 +109,10 @@ class DriverService implements DriverInterface
             if (!$driver) {
                 return [false, [], 404, 'هذا السائق غير موجود.'];
             }
-
+            $is_has_trip = Trip::where(['status' => 'available', 'driver_id', $driver->id])->exists();
+            if ($is_has_trip) {
+                return [false, [], 400, 'لا يمكن تعديل سائق لديه رحلة قائمة'];
+            }
             $data = $request->validated();
 
             // حذف الصورة القديمة إن وجدت وصورة جديدة مرفوعة
@@ -147,7 +151,10 @@ class DriverService implements DriverInterface
             if (!$driver) {
                 return [false, [], 404, 'هذا السائق غير موجود.'];
             }
-
+            $is_has_trip = Trip::where(['status' => 'available', 'driver_id', $driver->id])->exists();
+            if ($is_has_trip) {
+                return [false, [], 400, 'لا يمكن حذف سائق لديه رحلة قائمة'];
+            }
             if ($driver->photo && Storage::disk('public')->exists($driver->photo)) {
                 Storage::disk('public')->delete($driver->photo);
             }

@@ -151,7 +151,9 @@ class SeatService implements SeatInterface
             if (!$seat) {
                 return [false, [], 404, 'المقعد غير موجود.'];
             }
-
+            if (!$seat->is_available) {
+                return [false, [], 400, 'لا يمكنك حذف مقعد عليه حجز'];
+            }
             $seat->delete();
 
             return [true, null, 200, 'تم حذف المقعد بنجاح.'];
