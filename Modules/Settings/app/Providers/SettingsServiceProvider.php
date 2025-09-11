@@ -2,6 +2,7 @@
 
 namespace Modules\Settings\Providers;
 
+use Modules\Settings\Services\Complaint\ComplaintInterface;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
 use Illuminate\Support\Facades\Blade;
@@ -11,12 +12,15 @@ use Modules\Settings\Services\City\CityService;
 use Modules\Settings\Services\Role\RoleService;
 use Modules\Settings\Services\Role\IRoleService;
 use Modules\Settings\Services\City\CityInterface;
+use Modules\Settings\Services\Complaint\ComplaintService;
 use Modules\Settings\Services\Country\CountryService;
 use Modules\Settings\Services\Country\CountryInterface;
 use Modules\Settings\Services\Currency\CurrencyService;
 use Modules\Settings\Services\Currency\CurrencyInterface;
 use Modules\Settings\Services\Permission\PermissionService;
 use Modules\Settings\Services\Permission\IPermissionService;
+use Modules\Settings\Services\Review\ReviewInterface;
+use Modules\Settings\Services\Review\ReviewService;
 
 class SettingsServiceProvider extends ServiceProvider
 {
@@ -51,6 +55,8 @@ class SettingsServiceProvider extends ServiceProvider
         $this->app->bind(CurrencyInterface::class, CurrencyService::class);
         $this->app->bind(CountryInterface::class, CountryService::class);
         $this->app->bind(CityInterface::class, CityService::class);
+        $this->app->bind(ReviewInterface::class, ReviewService::class);
+        $this->app->bind(ComplaintInterface::class, ComplaintService::class);
     }
 
     /**

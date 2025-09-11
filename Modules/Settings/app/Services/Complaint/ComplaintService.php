@@ -15,12 +15,14 @@ class ComplaintService implements ComplaintInterface
     public function resolveOrClose(Complaint $complaint, array $data): array
     {
         try {
+            Log::info('Awad:', [$complaint]);
             $complaint->update([
                 'status'      => $data['status'],
                 'resolution'  => $data['resolution'] ?? null,
                 'resolved_by' => Auth::id(),
                 'resolved_at' => Carbon::now(),
             ]);
+            Log::info('Awad:', [$complaint]);
 
             return [true, $complaint];
         } catch (\Exception $e) {
@@ -30,8 +32,7 @@ class ComplaintService implements ComplaintInterface
     public function index(Request $request)
     {
         try {
-            $complaints = Complaint::with(['user', 'booking', 'resolver'])
-                ->filter($request)
+            $complaints = Complaint::filter($request)->with(['user', 'booking', 'resolver'])
                 ->paginate($request->input('per_page', 10));
 
             return [true, $complaints, 200, 'تم جلب الشكاوى بنجاح.'];
@@ -46,9 +47,9 @@ class ComplaintService implements ComplaintInterface
         try {
             $data = $request->validated();
             $data['user_id'] = Auth::id();
-            Complaint::create($data);
+            $complain = Complaint::create($data);
 
-            return [true, [], 201, 'تم إنشاء الشكوى بنجاح.'];
+            return [true, $complain, 201, 'تم إنشاء الشكوى بنجاح.'];
         } catch (\Exception $e) {
             Log::error('ComplaintService@store: ' . $e->getMessage());
             return [false, null, 500, 'حدث خطأ أثناء إنشاء الشكوى.'];
