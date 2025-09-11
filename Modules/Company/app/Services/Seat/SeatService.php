@@ -114,7 +114,7 @@ class SeatService implements SeatInterface
                 $query->where('company_id', $company->id);
             })
                 ->find($id);
-            if ($seat->is_available) {
+            if (!$seat->is_available) {
                 return [false, [], 400, 'لا يمكنك تعديل مقعد عليه حجز'];
             }
             if (!$seat) {
