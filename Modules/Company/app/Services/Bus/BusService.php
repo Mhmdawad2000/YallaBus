@@ -3,10 +3,11 @@
 namespace Modules\Company\Services\Bus;
 
 use Illuminate\Http\Request;
+use Modules\Trip\Models\Trip;
+use Modules\User\Models\User;
 use Modules\Company\Models\Bus;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use Modules\User\Models\User;
 use Modules\Company\Http\Requests\Bus\BusRequest;
 
 class BusService implements BusInterface
@@ -91,7 +92,6 @@ class BusService implements BusInterface
             if ($error) {
                 return $error;
             }
-
             $company = $this->getCompany();
             if (!$company) {
                 return [false, [], 404, 'الشركة غير موجودة.'];
@@ -100,6 +100,10 @@ class BusService implements BusInterface
             $bus = Bus::where('company_id', $company->id)->find($id);
             if (!$bus) {
                 return [false, [], 404, 'الحافلة غير موجودة.'];
+            }
+            $is_has_trip = Trip::where(['status' => 'available', 'bus_id', $bus->id])->exists();
+            if ($is_has_trip) {
+                return [false, [], 400, 'لا يمكن تعديل حافلة لديها رحلة قائمة'];
             }
 
             $bus->update($request->validated());

@@ -54,6 +54,7 @@ class BookingService implements BookingInterface
     {
         DB::beginTransaction();
         try {
+            $user = User::find(Auth::id());
             $data = $request->validated();
             $totalPrice = 0;
             $trip = Trip::findOrFail($data['trip_id']);
@@ -83,7 +84,6 @@ class BookingService implements BookingInterface
                 $totalPrice += $seatPrice;
             }
 
-            $user = User::find(Auth::id());
             if ($user->balance < $totalPrice) {
                 DB::rollBack();
                 return [false, [], 400, 'رصيدك غير كافي'];

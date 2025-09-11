@@ -70,6 +70,10 @@ class TripService implements TripInterface
             if (!$bus) {
                 return [false, [], 404, 'الباص غير موجود.'];
             }
+            $is_has_trip = Trip::where(['status' => 'available', 'bus_id', $bus->id])->exists();
+            if ($is_has_trip) {
+                return [false, [], 400, 'لا يمكنك اخيتار هذه حافلة لديها رحلة قائمة'];
+            }
             $data['available_seats'] = $bus->seats_count;
             $trip = Trip::create($data);
 
@@ -109,7 +113,16 @@ class TripService implements TripInterface
                 return [false, [], 404, 'الشركة غير موجودة.'];
             }
             $trip = Trip::find($id);
-
+            if (isset($request->bus_id) && $request->bus_id !== $trip->bus_id) {
+                $bus = Bus::withCount('seats')->find($request->bus_id);
+                if (!$bus) {
+                    return [false, [], 404, 'الباص غير موجود.'];
+                }
+                $is_has_trip = Trip::where(['status' => 'available', 'bus_id', $bus->id])->exists();
+                if ($is_has_trip) {
+                    return [false, [], 400, 'لا يمكنك اخيتار هذه حافلة لديها رحلة قائمة'];
+                }
+            }
             if (!$trip) {
                 return [false, [], 404, 'الرحلة غير موجودة'];
             }
