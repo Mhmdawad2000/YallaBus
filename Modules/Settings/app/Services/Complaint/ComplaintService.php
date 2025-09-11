@@ -15,14 +15,12 @@ class ComplaintService implements ComplaintInterface
     public function resolveOrClose(Complaint $complaint, array $data): array
     {
         try {
-            Log::info('Awad:', [$complaint]);
             $complaint->update([
                 'status'      => $data['status'],
                 'resolution'  => $data['resolution'] ?? null,
                 'resolved_by' => Auth::id(),
                 'resolved_at' => Carbon::now(),
             ]);
-            Log::info('Awad:', [$complaint]);
 
             return [true, $complaint];
         } catch (\Exception $e) {
