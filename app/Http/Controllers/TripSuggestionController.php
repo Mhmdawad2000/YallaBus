@@ -21,7 +21,6 @@ class TripSuggestionController extends Controller
         try {
             $user = User::find(Auth::id());
             $preferences = $this->analyzeUserPreferences($user);
-            Log::info("awad", [$preferences]);
 
             $suggestedTrips = $this->findSuggestedTripsWithCosine($user, $preferences);
             return $this->successResponse($suggestedTrips, 200, 'تم اقتراح الرحلات بنجاح');
