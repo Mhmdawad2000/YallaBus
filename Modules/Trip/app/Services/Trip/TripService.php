@@ -20,7 +20,7 @@ class TripService implements TripInterface
             $trips = Trip::filter($request)
                 ->where('status', 'available')
                 ->with(['company', 'bus', 'driver', 'departureCity', 'arrivalCity'])
-                ->paginate($request->input('per_page', 10));
+                ->get();
 
             return [true, $trips, 200, 'تم جلب الرحلات بنجاح'];
         } catch (\Exception $e) {

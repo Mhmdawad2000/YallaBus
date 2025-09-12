@@ -98,7 +98,7 @@ class TripSuggestionController extends Controller
         $trips = Trip::with(['company', 'departureCity', 'arrivalCity', 'bus'])
             ->available()
             ->upcoming()
-            ->where('departure_time', '>', now()->addHours(2))
+            ->where('departure_time', '>', now())
             ->where('available_seats', '>', 0)
             ->get();
 
