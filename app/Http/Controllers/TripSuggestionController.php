@@ -20,15 +20,11 @@ class TripSuggestionController extends Controller
     {
         try {
             $user = User::find(Auth::id());
-
-            // 1. الحصول على تفضيلات المستخدم من الحجوزات السابقة
             $preferences = $this->analyzeUserPreferences($user);
+            Log::info("awad", [$preferences]);
 
-            // 2. البحث عن رحلات مناسبة بناءً على التفضيلات
-            $suggestedTrips = $this->findSuggestedTrips($user, $preferences);
-           
-            return $this->successResponse( $suggestedTrips, 200, 'تم اقتراح الرحلات بنجاح');
-
+            $suggestedTrips = $this->findSuggestedTripsWithCosine($user, $preferences);
+            return $this->successResponse($suggestedTrips, 200, 'تم اقتراح الرحلات بنجاح');
         } catch (Exception $e) {
             Log::error('TripSuggestionController@getSuggestedTrips', [$e->getMessage()]);
             return $this->errorResponse([], 400, 'حدث خطأ مفاجئ إثناء اقتراح الرحلات');
@@ -36,18 +32,23 @@ class TripSuggestionController extends Controller
     }
 
     /**
-     * تحليل تفضيلات المستخدم من الحجوزات السابقة
+     * Analyze user preferences with counts
      */
     private function analyzeUserPreferences(User $user)
     {
+        // تحليل التفضيلات من الحجوزات
         $preferences = [
-            'preferred_companies' => [],
-            'preferred_routes' => [],
-            'preferred_times' => [],
+            'companies' => [],
+            'routes' => [],
+            'times' => [
+                'morning' => 0,
+                'afternoon' => 0,
+                'evening' => 0,
+                'night' => 0
+            ],
             'travel_frequency' => 0
         ];
 
-        // الحصول على الحجوزات السابقة للمستخدم
         $pastBookings = Booking::with('trip')
             ->where('user_id', $user->id)
             ->whereIn('status', ['confirmed', 'completed'])
@@ -59,167 +60,145 @@ class TripSuggestionController extends Controller
             return $preferences;
         }
 
-        // تحليل شركات النقل المفضلة
-        $companyCounts = [];
-        $routeCounts = [];
-        $timeSlots = [];
-
         foreach ($pastBookings as $booking) {
             if ($booking->trip) {
                 $trip = $booking->trip;
-
-                // عدّ الشركات
                 $companyId = $trip->company_id;
-                $companyCounts[$companyId] = ($companyCounts[$companyId] ?? 0) + 1;
+                $preferences['companies'][$companyId] = ($preferences['companies'][$companyId] ?? 0) + 1;
 
-                // عدّ المسارات (من مدينة إلى أخرى)
                 $routeKey = $trip->departure_city_id . '-' . $trip->arrival_city_id;
-                $routeCounts[$routeKey] = ($routeCounts[$routeKey] ?? 0) + 1;
+                $preferences['routes'][$routeKey] = ($preferences['routes'][$routeKey] ?? 0) + 1;
 
-                // تحليل أوقات السفر
                 $departureTime = Carbon::parse($trip->departure_time);
-                $timeSlots[] = $departureTime->format('H:i');
+                $hour = (int)$departureTime->format('H');
+                $timeCategory = $this->getTimeCategory($hour);
+                $preferences['times'][$timeCategory]++;
             }
         }
-
-        // تحديد الشركات المفضلة (التي حجز معها أكثر من مرة)
-        arsort($companyCounts);
-        $preferences['preferred_companies'] = array_keys(array_slice($companyCounts, 0, 3, true));
-
-        // تحديد المسارات المفضلة
-        arsort($routeCounts);
-        $preferredRoutes = array_slice($routeCounts, 0, 5, true);
-
-        foreach ($preferredRoutes as $routeKey => $count) {
-            list($departureCityId, $arrivalCityId) = explode('-', $routeKey);
-            $preferences['preferred_routes'][] = [
-                'departure_city_id' => (int)$departureCityId,
-                'arrival_city_id' => (int)$arrivalCityId,
-                'count' => $count
-            ];
-        }
-
-        // تحليل أوقات السفر المفضلة
-        $preferences['preferred_times'] = $this->analyzePreferredTimes($timeSlots);
 
         return $preferences;
     }
 
     /**
-     * تحليل أوقات السفر المفضلة
+     * Categorize time into slots
      */
-    private function analyzePreferredTimes(array $timeSlots)
+    private function getTimeCategory($hour)
     {
-        if (empty($timeSlots)) {
-            return [];
-        }
-
-        $timeCategories = [
-            'morning' => [6, 12],    // 6am to 12pm
-            'afternoon' => [12, 18], // 12pm to 6pm
-            'evening' => [18, 24],   // 6pm to 12am
-            'night' => [0, 6]        // 12am to 6am
-        ];
-
-        $timeCounts = [
-            'morning' => 0,
-            'afternoon' => 0,
-            'evening' => 0,
-            'night' => 0
-        ];
-
-        foreach ($timeSlots as $time) {
-            $hour = (int)explode(':', $time)[0];
-
-            foreach ($timeCategories as $category => $range) {
-                if ($hour >= $range[0] && $hour < $range[1]) {
-                    $timeCounts[$category]++;
-                    break;
-                }
-            }
-        }
-
-        // ترتيب الأوقات حسب التفضيل
-        arsort($timeCounts);
-        return array_keys(array_slice($timeCounts, 0, 2, true));
+        if ($hour >= 6 && $hour < 12) return 'morning';
+        if ($hour >= 12 && $hour < 18) return 'afternoon';
+        if ($hour >= 18 && $hour < 24) return 'evening';
+        return 'night';
     }
 
-
-
     /**
-     * البحث عن رحلات مقترحة بناءً على تفضيلات المستخدم
+     * Find suggested trips using cosine similarity
      */
-    private function findSuggestedTrips(User $user, array $preferences)
+    private function findSuggestedTripsWithCosine(User $user, array $preferences)
     {
-        $query = Trip::with(['company', 'departureCity', 'arrivalCity', 'bus'])
+        $trips = Trip::with(['company', 'departureCity', 'arrivalCity', 'bus'])
             ->available()
             ->upcoming()
-            ->where('departure_time', '>', now()->addHours(2)) // رحلات بعد ساعتين على الأقل
-            ->where('available_seats', '>', 0); // رحلات بها مقاعد متاحة
-        // ->where('price', '<=', $user->balance); // رحلات within user's budget
+            ->where('departure_time', '>', now())
+            ->where('available_seats', '>', 0)
+            ->get();
 
-        // إذا كان للمستخدم تفضيلات محددة
-        if (!empty($preferences['preferred_companies'])) {
-            $query->whereIn('company_id', $preferences['preferred_companies']);
+        if ($preferences['travel_frequency'] == 0) {
+            return $trips->take(10);
         }
 
-        // إذا كان للمستخدم مسارات مفضلة
-        if (!empty($preferences['preferred_routes'])) {
-            $routeConditions = function ($q) use ($preferences) {
-                foreach ($preferences['preferred_routes'] as $route) {
-                    $q->orWhere(function ($q2) use ($route) {
-                        $q2->where('departure_city_id', $route['departure_city_id'])
-                            ->where('arrival_city_id', $route['arrival_city_id']);
-                    });
+
+
+
+
+
+        // بناء متجه المستخدم وفهرس الميزات
+        // Build user vector and feature index
+        $totalBookings = $preferences['travel_frequency'];
+        $userVector = [];
+        $featureIndex = [];
+
+        // Add companies to vector
+        foreach ($preferences['companies'] as $companyId => $count) {
+            $featureIndex[] = 'company_' . $companyId;
+            $userVector[] = $count / $totalBookings;
+        }
+
+        // Add routes to vector
+        foreach ($preferences['routes'] as $routeKey => $count) {
+            $featureIndex[] = 'route_' . $routeKey;
+            $userVector[] = $count / $totalBookings;
+        }
+
+        // Add time categories to vector
+        $timeCats = ['morning', 'afternoon', 'evening', 'night'];
+        foreach ($timeCats as $cat) {
+            $featureIndex[] = 'time_' . $cat;
+            $userVector[] = ($preferences['times'][$cat] ?? 0) / $totalBookings;
+        }
+        // Precompute user vector norm
+        $userNorm = sqrt(array_sum(array_map(function ($x) {
+            return $x * $x;
+        }, $userVector)));
+
+
+
+
+
+
+        // لكل رحلة، بناء متجه الميزات
+        // Calculate similarity for each trip
+        $tripScores = [];
+        foreach ($trips as $trip) {
+            $tripFeatures = [];
+
+            // Add company feature
+            $tripFeatures['company_' . $trip->company_id] = 1;
+
+            // Add route feature
+            $routeKey = $trip->departure_city_id . '-' . $trip->arrival_city_id;
+            $tripFeatures['route_' . $routeKey] = 1;
+
+            // Add time feature
+            $departureHour = (int)Carbon::parse($trip->departure_time)->format('H');
+            $timeCat = $this->getTimeCategory($departureHour);
+            $tripFeatures['time_' . $timeCat] = 1;
+
+            // Build trip vector
+            $tripVector = array_fill(0, count($featureIndex), 0);
+            foreach ($tripFeatures as $feature => $value) {
+                $pos = array_search($feature, $featureIndex);
+                if ($pos !== false) {
+                    $tripVector[$pos] = $value;
                 }
-            };
+            }
 
-            $query->where($routeConditions);
+            // Compute cosine similarity
+            $dotProduct = 0;
+            $tripNorm = 0;
+            foreach ($tripVector as $index => $value) {
+                $dotProduct += $userVector[$index] * $value;
+                $tripNorm += $value * $value;
+            }
+            $tripNorm = sqrt($tripNorm);
+
+            if ($userNorm > 0 && $tripNorm > 0) {
+                $similarity = $dotProduct / ($userNorm * $tripNorm);
+            } else {
+                $similarity = 0;
+            }
+
+            $tripScores[] = ['trip' => $trip, 'score' => $similarity];
         }
 
-        // تطبيق تفضيلات الوقت إذا وجدت
-        if (!empty($preferences['preferred_times'])) {
-            $timeConditions = function ($q) use ($preferences) {
-                foreach ($preferences['preferred_times'] as $timeCategory) {
-                    switch ($timeCategory) {
-                        case 'morning':
-                            $q->orWhereTime('departure_time', '>=', '06:00:00')
-                                ->whereTime('departure_time', '<', '12:00:00');
-                            break;
-                        case 'afternoon':
-                            $q->orWhereTime('departure_time', '>=', '12:00:00')
-                                ->whereTime('departure_time', '<', '18:00:00');
-                            break;
-                        case 'evening':
-                            $q->orWhereTime('departure_time', '>=', '18:00:00')
-                                ->whereTime('departure_time', '<', '24:00:00');
-                            break;
-                        case 'night':
-                            $q->orWhereTime('departure_time', '>=', '00:00:00')
-                                ->whereTime('departure_time', '<', '06:00:00');
-                            break;
-                    }
-                }
-            };
+        // ترتيب الرحلات حسب درجة التشابه
+        // Sort trips by similarity score
+        usort($tripScores, function ($a, $b) {
+            return $b['score'] <=> $a['score'];
+        });
 
-            $query->where($timeConditions);
-        }
-
-        // إذا لم يكن هناك رحلات تطابق التفضيلات، نعود برحلات عشوائية متاحة
-        $suggestedTrips = $query->take(10)->get();
-
-        if ($suggestedTrips->isEmpty()) {
-            $suggestedTrips = Trip::with(['company', 'departureCity', 'arrivalCity', 'bus'])
-                ->available()
-                ->upcoming()
-                ->where('departure_time', '>', now()->addHours(2))
-                ->where('available_seats', '>', 0)
-                ->where('price', '<=', $user->balance)
-                ->inRandomOrder()
-                ->take(5)
-                ->get();
-        }
-
-        return $suggestedTrips;
+        // Return top 10 trips
+        return array_map(function ($item) {
+            return $item['trip'];
+        }, array_slice($tripScores, 0, 10));
     }
 }
